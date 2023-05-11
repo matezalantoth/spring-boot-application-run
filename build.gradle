@@ -1,0 +1,35 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'org.json:json:20230227'
+	tasks.withType(JavaCompile) {
+		options.encoding = 'UTF-8'
+	}
+	tasks.withType(Test) {
+		jvmArgs '-Dfile.encoding=UTF-8'
+	}
+	implementation("org.seleniumhq.selenium:selenium-java:4.9.0")
+	implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.9.0")
+	implementation("com.opencsv:opencsv:5.7.1")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
