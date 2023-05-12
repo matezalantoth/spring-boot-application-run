@@ -37,8 +37,8 @@ public class FacebookBrowser {
 
     protected WebDriver createAndLogin(String email, String password) throws InterruptedException {
 
-        String chromeDriverPath = "\\Drivers\\chromedriver.exe";
-        String path = "C:\\Users\\zalan\\IdeaProjects\\SeleniumTest1";
+        String chromeDriverPath = "drivers/chromedriver";
+        String path = "";
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--log-path=" + path + chromeDriverPath);

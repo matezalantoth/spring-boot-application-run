@@ -31,7 +31,7 @@ public class Image {
             String time = String.valueOf(Instant.now().getEpochSecond());
             System.out.println(time);
 
-            localLink = "C:\\Users\\zalan\\Downloads\\" + time + ".jpg";
+            localLink = "/home/matezalantoth/Downloads" + time + ".jpg";
             ImageIO.write(newImage, "jpg", new File(localLink));
 
         } catch (IOException e) {

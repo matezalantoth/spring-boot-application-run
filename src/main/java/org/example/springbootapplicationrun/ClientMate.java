@@ -29,11 +29,13 @@ public class ClientMate {
     public void downloadPosts() throws IOException{
         URL webURL = new URL("https://smp.ingatlanforras.hu/api/agencies/6913/facebook-posts");
         String json = IOUtils.toString(webURL, Charset.forName("UTF-8"));
+        System.out.println(json);
         JSONObject result = new JSONObject(json);
         JSONArray posts = result.getJSONArray("data");
         PostContainer postContainer = PostContainer.getInstance();
         UserContainer userContainer = UserContainer.getInstance();
         posts.forEach((post) -> {
+            System.out.println(post);
             JSONObject posting = (JSONObject) post;
             Post poster = new Post();
             BigInteger facebookGroupId = (posting.getJSONObject("facebook_group").getBigInteger("groupId"));
