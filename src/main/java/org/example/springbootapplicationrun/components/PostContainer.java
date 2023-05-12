@@ -1,30 +1,18 @@
 package org.example.springbootapplicationrun.components;
 
-import models.Post;
+import org.example.springbootapplicationrun.models.Post;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
+@Component
 public class PostContainer {
 
-
-    private static PostContainer INSTANCE;
     private LinkedHashMap<Integer, Post> posts;
-
-    public static PostContainer getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new PostContainer();
-
-        }
-
-        return INSTANCE;
-    }
 
     public PostContainer() {
         posts = new LinkedHashMap<>();
-
-
 
     }
     public void addPost(Post post){

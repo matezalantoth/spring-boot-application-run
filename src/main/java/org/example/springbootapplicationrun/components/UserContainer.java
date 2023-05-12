@@ -1,23 +1,13 @@
 package org.example.springbootapplicationrun.components;
 
-import models.User;
+import org.example.springbootapplicationrun.models.User;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
-
+@Component
 public class UserContainer {
-
-
-    private static UserContainer INSTANCE;
     private LinkedHashMap<Integer, User> users;
 
-    public static UserContainer getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserContainer();
-
-        }
-
-        return INSTANCE;
-    }
 
     public UserContainer() {
         users = new LinkedHashMap<>();
@@ -31,6 +21,11 @@ public class UserContainer {
         user2.setEmail("mattcookzrt@gmail.com");
         user2.setPassword("Mate'sCook190");
         users.put(user2.getId(), user2);
+        User user3 = new User();
+        user3.setId(3);
+        user3.setEmail("stopmotionformeandyt@gmail.com");
+        user3.setPassword("Mate'sApple190");
+        users.put(user3.getId(), user3);
 
     }
 

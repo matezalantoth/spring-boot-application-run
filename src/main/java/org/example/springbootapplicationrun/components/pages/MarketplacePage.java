@@ -1,6 +1,6 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import models.Car;
+import org.example.springbootapplicationrun.models.Car;
 import org.openqa.selenium.*;
 
 import java.util.ArrayList;

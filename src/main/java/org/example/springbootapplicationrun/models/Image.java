@@ -1,4 +1,4 @@
-package models;
+package org.example.springbootapplicationrun.models;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,8 +9,8 @@ import java.time.Instant;
 
 public class Image {
 
-    String url;
-    String localLink;
+    private String url;
+    private String localLink;
 
     public void setUrl(String url) {
         this.url = url;
@@ -18,6 +18,10 @@ public class Image {
 
     public void setLocalLink(String localLink) {
         this.localLink = localLink;
+    }
+
+    public String getLocalLink(){
+        return getLocalLink();
     }
 
     public void download() throws InterruptedException{

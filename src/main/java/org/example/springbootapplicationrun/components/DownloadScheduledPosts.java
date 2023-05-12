@@ -1,16 +1,11 @@
-package org.example.springbootapplicationrun;
+package org.example.springbootapplicationrun.components;
 
-import models.Image;
-import models.Post;
-import models.User;
+import org.example.springbootapplicationrun.models.Image;
+import org.example.springbootapplicationrun.models.Post;
 import org.apache.commons.io.IOUtils;
-import org.example.springbootapplicationrun.components.FacebookBrowser;
-import org.example.springbootapplicationrun.components.PostContainer;
-import org.example.springbootapplicationrun.components.UserContainer;
-import org.example.springbootapplicationrun.components.pages.GroupPage;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ClientMate {
+public class DownloadScheduledPosts {
+
+    @Autowired
+    private PostContainer postContainer;
+    @Autowired
+    private UserContainer userContainer;
 
 
     @Scheduled(fixedRate = 60_000)
@@ -32,8 +32,6 @@ public class ClientMate {
         System.out.println(json);
         JSONObject result = new JSONObject(json);
         JSONArray posts = result.getJSONArray("data");
-        PostContainer postContainer = PostContainer.getInstance();
-        UserContainer userContainer = UserContainer.getInstance();
         posts.forEach((post) -> {
             System.out.println(post);
             JSONObject posting = (JSONObject) post;
@@ -64,30 +62,6 @@ public class ClientMate {
         });
     }
 
-    @Scheduled(fixedRate = 600_000, initialDelay = 10_000)
-    public void sendSelectedPosts() throws InterruptedException {
-        PostContainer postContainer = PostContainer.getInstance();
-        List<Post> postering = postContainer.getPosts();
-
-        FacebookBrowser facebookBrowser = FacebookBrowser.getInstance();
-        UserContainer userContainer = UserContainer.getInstance();
-        System.out.println(postering.size());
-
-        for (Post post : postering) {
-            User user = userContainer.getUserByUserId(post.getUserId());
-            WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword());
-            System.out.println(post.getTitle());
-            post.downloadImages();
-            GroupPage groupPage = new GroupPage();
-            groupPage.sendPost(post, driver);
-            Thread.sleep(25000);
-            driver.get("https://www.facebook.com");
-            Thread.sleep(2000);
-
-        }
-
-
-    }
 
 
 }

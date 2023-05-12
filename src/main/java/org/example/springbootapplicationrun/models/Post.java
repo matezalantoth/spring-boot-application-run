@@ -1,16 +1,16 @@
-package models;
+package org.example.springbootapplicationrun.models;
 
 import java.math.BigInteger;
 import java.util.List;
 
 public class Post {
-    String title;
-    String description;
-    List<Image> images;
-    Integer price;
-    String link;
-    Integer postId;
-    BigInteger facebookGroupId;
+    private String title;
+    private String description;
+    private List<Image> images;
+    private Integer price;
+    private String link;
+    private Integer postId;
+    private BigInteger facebookGroupId;
 
     Integer userId;
 
@@ -46,16 +46,17 @@ public class Post {
         return title;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
 
     public String getDescription() {
+
         return description;
     }
 
     public void setImages(List<Image> imagesList) {
+
         this.images = imagesList;
     }
 
@@ -98,7 +99,7 @@ public class Post {
             if (!imageLinkBuilder.isEmpty()) {
                 imageLinkBuilder.append("\n");
             }
-            imageLinkBuilder.append(image.localLink);
+            imageLinkBuilder.append(image.getLocalLink());
         });
 
         return (imageLinkBuilder.toString());

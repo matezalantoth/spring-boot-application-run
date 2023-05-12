@@ -1,12 +1,12 @@
-package models;
+package org.example.springbootapplicationrun.models;
 
 public class User {
 
-    String email;
+    private String email;
 
-    String password;
+    private String password;
 
-    Integer id;
+    private Integer id;
 
     public void setEmail(String email) {this.email = email;}
     public String getEmail() {return email;}
