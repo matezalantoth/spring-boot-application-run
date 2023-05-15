@@ -1,5 +1,7 @@
 package org.example.springbootapplicationrun.models;
 
+import org.json.JSONObject;
+
 public final class Car {
     private String title;
     private String image;
@@ -11,6 +13,7 @@ public final class Car {
 
         this.title = title;
     }
+
 
     public void setImage(String image) {
 
@@ -30,6 +33,22 @@ public final class Car {
     public void setLink(String link) {
 
         this.link = link;
+    }
+
+    public JSONObject setJSONInfo() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("title", title);
+        jsonObject.put("image", image);
+        jsonObject.put("distance", distance);
+        jsonObject.put("price", price);
+        jsonObject.put("link", link);
+
+        return jsonObject;
+    }
+
+    public JSONObject getJSONInfo() {
+
+        return setJSONInfo();
     }
 
     public String[] toArray() {

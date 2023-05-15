@@ -21,7 +21,7 @@ public class Image {
     }
 
     public String getLocalLink(){
-        return getLocalLink();
+        return localLink;
     }
 
     public void download() throws InterruptedException{
@@ -35,7 +35,7 @@ public class Image {
             String time = String.valueOf(Instant.now().getEpochSecond());
             System.out.println(time);
 
-            localLink = "/home/matezalantoth/Downloads" + time + ".jpg";
+            localLink = "/home/matezalantoth/Downloads/" + time + ".jpg";
             ImageIO.write(newImage, "jpg", new File(localLink));
 
         } catch (IOException e) {
