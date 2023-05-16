@@ -1,6 +1,8 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import models.Car;
+import org.example.springbootapplicationrun.models.Car;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 
 import java.util.ArrayList;
@@ -14,14 +16,14 @@ public class MarketplacePage {
         this.driver = driver;
     }
 
-    public List<Car> getCars() throws InterruptedException {
+    public JSONArray getCars() throws InterruptedException {
 
         driver.get("https://www.facebook.com/marketplace/category/cars?sortBy=creation_time_descend&exact=false");
         Thread.sleep(2000);
 
         scrollDown();
 
-        List<Car> cars = new ArrayList<Car>();
+        JSONArray carsInfo = new JSONArray();
 
         driver.findElements(By.xpath("//img")).forEach(image -> {
 
@@ -50,17 +52,16 @@ public class MarketplacePage {
                 car.setLink(link.getAttribute("href"));
                 car.setPrice(price.getText());
                 car.setDistance(distance.getText());
-                cars.add(car);
 
-            } catch (NoSuchElementException e) {
-                return;
+                JSONObject jsonObject = car.getJSONInfo();
+                carsInfo.put(jsonObject);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
 
         });
-
-        System.out.println(cars.size());
-        return cars;
-
+        return carsInfo;
     }
 
     private void scrollDown() throws InterruptedException {
