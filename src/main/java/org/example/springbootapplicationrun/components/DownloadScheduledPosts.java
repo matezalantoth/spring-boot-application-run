@@ -1,8 +1,10 @@
 package org.example.springbootapplicationrun.components;
 
+import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.Post;
 import org.apache.commons.io.IOUtils;
+import org.example.springbootapplicationrun.models.PostReport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class DownloadScheduledPosts {
             System.out.println(post);
             JSONObject posting = (JSONObject) post;
             Post poster = new Post();
+            poster.setScheduledTo(LocalDateTime.parse(posting.getString("scheduledTo"), DateTimeFormatter.ISO_DATE_TIME));
             BigInteger facebookGroupId = (posting.getJSONObject("facebook_group").getBigInteger("groupId"));
             poster.setFacebookGroupId(facebookGroupId);
             Integer postId = (posting.getInt("id"));
@@ -58,6 +63,7 @@ public class DownloadScheduledPosts {
                 imaging.add(newImage);
             });
             poster.setImages(imaging);
+            poster.setStatus(PostStatus.DOWNLOADED);
             postContainer.addPost(poster);
         });
     }

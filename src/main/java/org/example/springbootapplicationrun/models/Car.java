@@ -35,7 +35,7 @@ public final class Car {
         this.link = link;
     }
 
-    public JSONObject setJSONInfo() {
+    public JSONObject getJSONInfo() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", title);
         jsonObject.put("image", image);
@@ -44,11 +44,6 @@ public final class Car {
         jsonObject.put("link", link);
 
         return jsonObject;
-    }
-
-    public JSONObject getJSONInfo() {
-
-        return setJSONInfo();
     }
 
     public String[] toArray() {

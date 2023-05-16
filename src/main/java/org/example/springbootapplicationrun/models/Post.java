@@ -1,6 +1,9 @@
 package org.example.springbootapplicationrun.models;
 
+import org.example.springbootapplicationrun.enums.PostStatus;
+
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Post {
@@ -11,13 +14,41 @@ public class Post {
     private String link;
     private Integer postId;
     private BigInteger facebookGroupId;
+    private Integer userId;
+    private PostStatus status;
+    private LocalDateTime scheduledTo;
 
-    Integer userId;
+    public LocalDateTime getScheduledTo() {
+        return scheduledTo;
+    }
 
+    public void setScheduledTo(LocalDateTime scheduledTo) {
+        this.scheduledTo = scheduledTo;
+    }
+
+
+    public Post(){
+        status = PostStatus.PENDING;
+    }
+
+
+    public void setStatus(PostStatus status) {
+        this.status = status;
+    }
+    public PostStatus getStatus(){
+        return status;
+    }
+
+    public boolean isDownloaded() {
+        return status == PostStatus.DOWNLOADED;
+    }
+
+    public boolean isScheduled() {
+        return status == PostStatus.SCHEDULED;
+    }
     public void setFacebookGroupId(BigInteger facebookGroupId) {
         this.facebookGroupId = facebookGroupId;
     }
-
     public BigInteger getFacebookGroupId() {
         return facebookGroupId;
     }
