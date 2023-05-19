@@ -1,20 +1,20 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.containers.PostContainer;
+import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.Post;
-import org.apache.commons.io.IOUtils;
-import org.example.springbootapplicationrun.models.PostReport;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,19 +22,13 @@ import java.util.List;
 
 @Component
 public class DownloadScheduledPosts {
-
     @Autowired
     private PostContainer postContainer;
     @Autowired
-    private UserContainer userContainer;
-
-
+    private PostClient postClient;
     @Scheduled(fixedRate = 60_000)
     public void downloadPosts() throws IOException{
-        URL webURL = new URL("https://smp.ingatlanforras.hu/api/agencies/6913/facebook-posts");
-        String json = IOUtils.toString(webURL, Charset.forName("UTF-8"));
-        System.out.println(json);
-        JSONObject result = new JSONObject(json);
+        JSONObject result = postClient.getPosts();
         JSONArray posts = result.getJSONArray("data");
         posts.forEach((post) -> {
             System.out.println(post);

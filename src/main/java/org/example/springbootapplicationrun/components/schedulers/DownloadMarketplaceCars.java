@@ -1,26 +1,17 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.schedulers;
 
-import com.opencsv.CSVWriter;
-import org.apache.commons.io.FileUtils;
-import org.example.springbootapplicationrun.models.Car;
+import org.example.springbootapplicationrun.components.clients.CarServer;
+import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
+import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.components.pages.MarketplacePage;
-import org.json.CDL;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONWriter;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class DownloadMarketplaceCars {
