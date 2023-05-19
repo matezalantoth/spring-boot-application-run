@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.containers;
 
 import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.models.Post;

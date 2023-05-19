@@ -1,12 +1,15 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.schedulers;
 
 
+import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
+import org.example.springbootapplicationrun.components.clients.GroupPostServer;
+import org.example.springbootapplicationrun.components.containers.PostContainer;
+import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.PostReport;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.components.pages.GroupPage;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +40,7 @@ public class SendSelectedPosts {
         for (Post post : postering) {
             try {
                 post.setStatus(PostStatus.POSTING);
-                User user = userContainer.getUserByUserId(post.getUserId());
+                User user = userContainer.getFbUserByUserId(post.getUserId());
                 WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword());
                 System.out.println(post.getTitle());
                 post.downloadImages();

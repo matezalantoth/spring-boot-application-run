@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.browsers;
 
 import org.example.springbootapplicationrun.components.pages.LoginPage;
 import org.openqa.selenium.WebDriver;

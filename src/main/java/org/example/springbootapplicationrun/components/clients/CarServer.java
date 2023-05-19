@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.clients;
 
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
