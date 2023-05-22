@@ -3,11 +3,12 @@ package org.example.springbootapplicationrun.components.clients;
 import org.apache.commons.io.IOUtils;
 import org.example.springbootapplicationrun.models.Post;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
-
+@Component
 public class PostClient {
 
     public JSONObject getPosts() throws IOException {
