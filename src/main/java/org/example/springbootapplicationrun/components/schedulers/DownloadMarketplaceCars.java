@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.Instant;
 
 @Component
@@ -25,9 +26,9 @@ public class DownloadMarketplaceCars {
 
 
     @Scheduled(fixedRate = 3_600_000)
-    public void downloadCars() throws InterruptedException {
+    public void downloadCars() throws InterruptedException, IOException {
 
-        User user = userContainer.getUserByUserId(3);
+        User user = userContainer.getFbUserByUserId(3);
 
         WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword());
 
