@@ -1,7 +1,5 @@
 package org.example.springbootapplicationrun.models;
 
-import com.fasterxml.jackson.jr.ob.JSON;
-import kotlinx.coroutines.repackaged.net.bytebuddy.asm.Advice;
 import org.example.springbootapplicationrun.enums.PostStatus;
 import org.json.JSONObject;
 
