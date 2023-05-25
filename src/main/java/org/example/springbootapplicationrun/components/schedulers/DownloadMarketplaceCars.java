@@ -34,7 +34,7 @@ public class DownloadMarketplaceCars {
 
         User user = userContainer.getFbUserByUserId(3);
 
-        WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(), user.getId());
+        WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
         if (currentStatus == UserStatus.INVALID){
@@ -47,9 +47,8 @@ public class DownloadMarketplaceCars {
             carServer.sendCarsToServer(cars);
 
         }catch(Exception e){
-            user.isInvalid();
+            user.setStatus(UserStatus.INVALID);
         }
-        user.isValid();
 
         String time = String.valueOf(Instant.now().getEpochSecond());
         System.out.println(time);

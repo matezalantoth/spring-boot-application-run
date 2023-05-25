@@ -34,7 +34,7 @@ public class GetGroupLinks {
 
         User user = userContainer.getFbUserByUserId(1);
 
-        WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(),user.getId());
+        WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
         if (currentStatus == UserStatus.INVALID){
@@ -48,9 +48,8 @@ public class GetGroupLinks {
 
         }catch(Exception e){
 
-            user.isInvalid();
+            user.setStatus(UserStatus.INVALID);
         }
-        user.isValid();
 
         System.out.println(currentStatus);
 

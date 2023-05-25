@@ -35,11 +35,7 @@ public class User {
     public UserStatus getStatus() {
         return status;
     }
-    public boolean isValid() { return status == UserStatus.VALID; }
 
-    public boolean isInvalid() {
-        return status == UserStatus.INVALID;
-    }
 
 
 

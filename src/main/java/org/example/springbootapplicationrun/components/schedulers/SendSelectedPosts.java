@@ -45,12 +45,14 @@ public class SendSelectedPosts {
 
                 post.setStatus(PostStatus.POSTING);
                 User user = userContainer.getFbUserByUserId(post.getUserId());
-                WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(), user.getId());
 
                 UserStatus currentStatus = user.getStatus();
                 if (currentStatus == UserStatus.INVALID) {
                     return;
                 }
+
+                WebDriver driver = facebookBrowser.getBrowser(user);
+
 
                 System.out.println(currentStatus);
 
@@ -73,9 +75,9 @@ public class SendSelectedPosts {
                     groupPage.sendPost(post, driver);
 
                 }catch (Exception e){
-                    user.isInvalid();
+                    user.setStatus(UserStatus.INVALID);
+                    return;
                 }
-                user.isValid();
 
                 post.setStatus(PostStatus.POSTED);
                 LocalDateTime time = LocalDateTime.from(LocalTime.now());
