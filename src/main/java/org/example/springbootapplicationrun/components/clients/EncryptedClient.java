@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.components.clients;
 
 import org.apache.commons.io.IOUtils;
+import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.User;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class EncryptedClient {
         user.setEmail(newEmail);
         user.setPassword(newPassword);
         user.setId(userId);
+        user.setStatus(UserStatus.VALID);
         return user;
     }
 }

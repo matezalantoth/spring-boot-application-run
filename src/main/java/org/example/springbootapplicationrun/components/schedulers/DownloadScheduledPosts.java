@@ -26,7 +26,7 @@ public class DownloadScheduledPosts {
     private PostContainer postContainer;
     @Autowired
     private PostClient postClient;
-    @Scheduled(fixedRate = 60_000)
+//    @Scheduled(fixedRate = 60_000)
     public void downloadPosts() throws IOException{
         JSONObject result = postClient.getPosts();
         JSONArray posts = result.getJSONArray("data");
