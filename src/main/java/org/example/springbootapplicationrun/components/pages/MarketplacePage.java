@@ -1,12 +1,13 @@
 package org.example.springbootapplicationrun.components.pages;
 
+import org.example.springbootapplicationrun.components.clients.UserClient;
+import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
+import org.example.springbootapplicationrun.models.User;
+import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MarketplacePage {
 
@@ -25,6 +26,7 @@ public class MarketplacePage {
 
         JSONArray carsInfo = new JSONArray();
 
+
         driver.findElements(By.xpath("//img")).forEach(image -> {
 
             String name = image.getAttribute("alt");
@@ -37,7 +39,9 @@ public class MarketplacePage {
 
             WebElement link = image.findElement(By.xpath("./ancestor::a"));
             System.out.println(link.getAttribute("href"));
+
             try {
+
 
                 WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
                 System.out.println(distance.getText());
@@ -63,6 +67,7 @@ public class MarketplacePage {
         });
         return carsInfo;
     }
+
 
     private void scrollDown() throws InterruptedException {
 

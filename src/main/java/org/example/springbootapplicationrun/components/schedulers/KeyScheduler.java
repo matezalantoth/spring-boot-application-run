@@ -14,7 +14,7 @@ import java.time.chrono.ChronoLocalDateTime;
 public class KeyScheduler {
     @Autowired private TokenContainer tokenContainer;
     @Autowired private KeyClient keyClient;
-    @Scheduled(fixedRate = 120_000)
+//    @Scheduled(fixedRate = 120_000)
     public void checkIfExpired() {
         LocalDateTime tokenExpiresAt = tokenContainer.getExpiresAt();
         if (tokenExpiresAt.isAfter(ChronoLocalDateTime.from(LocalTime.now()))) {
