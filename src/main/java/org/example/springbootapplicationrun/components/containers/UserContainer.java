@@ -2,12 +2,16 @@ package org.example.springbootapplicationrun.components.containers;
 
 import org.example.springbootapplicationrun.components.clients.EncryptedClient;
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+
 @Component
 public class UserContainer {
 
@@ -22,19 +26,16 @@ public class UserContainer {
         user.setId(1);
         user.setEmail("timapples1974@gmail.com");
         user.setPassword("Mate'sPC190");
-        user.setStatus(UserStatus.VALID);
         fbUsers.put(user.getId(), user);
         User user2 = new User();
         user2.setId(2);
         user2.setEmail("mattcookzrt@gmail.com");
         user2.setPassword("Mate'sCook190");
-        user.setStatus(UserStatus.VALID);
         fbUsers.put(user2.getId(), user2);
         User user3 = new User();
         user3.setId(3);
         user3.setEmail("stopmotionformeandyt@gmail.com");
         user3.setPassword("Mate'sApple190");
-        user.setStatus(UserStatus.VALID);
         fbUsers.put(user3.getId(), user3);
 
     }
@@ -54,4 +55,18 @@ public class UserContainer {
         User user = encryptedClient.getFbUser(userId);
         return user;
     }
+
+    public List<User> getInvalidUsers(){
+        List<User> invalidUsers = new ArrayList<>();
+        fbUsers.forEach((userId, user) ->{
+            if (user.isInvalid()){
+
+                invalidUsers.add(user);
+            }
+        });
+
+        return invalidUsers;
+    }
+
+
 }

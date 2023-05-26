@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -27,10 +28,12 @@ public class DownloadMarketplaceCars {
     private UserContainer userContainer;
     @Autowired
     private CarServer carServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
     @Scheduled(fixedRate = 3_600_000)
-    public void downloadCars() throws InterruptedException, IOException {
+    public void downloadCars() throws Exception {
 
         User user = userContainer.getFbUserByUserId(3);
 
@@ -47,7 +50,9 @@ public class DownloadMarketplaceCars {
             carServer.sendCarsToServer(cars);
 
         }catch(Exception e){
-            user.setStatus(UserStatus.INVALID);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            facebookBrowser.closeBrowser(user);
+            return;
         }
 
         String time = String.valueOf(Instant.now().getEpochSecond());
@@ -56,17 +61,7 @@ public class DownloadMarketplaceCars {
         driver.get("https://www.facebook.com");
         Thread.sleep(2000);
 
-        System.out.println(currentStatus);
 
-        UserReport userReport = new UserReport();
-        UserClient userStatusServer = new UserClient();
-
-        System.out.println(currentStatus);
-        userReport.setUserStatus(user.getStatus());
-        userReport.setId(user.getId());
-
-        JSONObject userStatus = userReport.getUserStatusJSON();
-        userStatusServer.sendUserInfoToServer(userStatus);
 
 
     }

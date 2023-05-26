@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.browsers;
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.UserClient;
 import org.example.springbootapplicationrun.components.pages.LoginPage;
 import org.example.springbootapplicationrun.enums.UserStatus;
@@ -9,17 +10,21 @@ import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 @Component
 public class FacebookBrowser {
+
+    @Autowired
+    private UserUpdater userUpdater;
     private LinkedHashMap<String, WebDriver> drivers;
     public FacebookBrowser() {
         drivers = new LinkedHashMap<>();
 
     }
-    public WebDriver getBrowser(User user) throws InterruptedException {
+    public WebDriver getBrowser(User user) throws Exception {
         String email = user.getEmail();
         if (drivers.containsKey(email)){
             return  drivers.get(email);
@@ -30,7 +35,11 @@ public class FacebookBrowser {
 
     }
 
-    protected WebDriver createAndLogin(User user) throws InterruptedException {
+    protected WebDriver createAndLogin(User user) throws Exception {
+
+        if (user.getStatus() == UserStatus.INVALID){
+            throw new Exception("User INVALID");
+        }
 
         String email = user.getEmail();
         String password = user.getPassword();
@@ -46,31 +55,32 @@ public class FacebookBrowser {
         WebDriver driver = new ChromeDriver(chromeOptions);
         driver.manage().window().maximize();
 
+
         try {
 
             LoginPage loginPage = new LoginPage(driver);
             loginPage.login(email, password);
+
         }catch(Exception e){
-            user.setStatus(UserStatus.INVALID);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            closeBrowser(user);
             throw e;
         }
-        UserStatus currentStatus = user.getStatus();
-
-        System.out.println(currentStatus);
-
-        UserReport userReport = new UserReport();
-        UserClient userStatusServer = new UserClient();
-
-        System.out.println(currentStatus);
-        userReport.setUserStatus(user.getStatus());
-        userReport.setId(user.getId());
-
-        JSONObject userStatus = userReport.getUserStatusJSON();
-        userStatusServer.sendUserInfoToServer(userStatus);
 
         drivers.put(email,driver);
 
         return driver;
+
+    }
+
+    public void closeBrowser(User user){
+        String email = user.getEmail();
+        if (!drivers.containsKey(email)){
+            return;
+        }
+        WebDriver driver = drivers.get(email);
+        driver.close();
+        drivers.remove(email);
 
     }
 

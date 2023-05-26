@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.GroupPostServer;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -33,6 +34,8 @@ public class SendSelectedPosts {
     private UserContainer userContainer;
     @Autowired
     private GroupPostServer groupPostServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
     @Scheduled(fixedRate = 1_000_000, initialDelay = 10_000)
@@ -53,30 +56,15 @@ public class SendSelectedPosts {
 
                 WebDriver driver = facebookBrowser.getBrowser(user);
 
-
-                System.out.println(currentStatus);
-
-                UserReport userReport = new UserReport();
-                UserClient userStatusServer = new UserClient();
-
-                System.out.println(currentStatus);
-                userReport.setUserStatus(user.getStatus());
-                userReport.setId(user.getId());
-
-                JSONObject userStatus = userReport.getUserStatusJSON();
-                userStatusServer.sendUserInfoToServer(userStatus);
-
-                System.out.println(post.getTitle());
-                post.downloadImages();
-
                 try {
 
                     GroupPage groupPage = new GroupPage();
                     groupPage.sendPost(post, driver);
 
                 }catch (Exception e){
-                    user.setStatus(UserStatus.INVALID);
-                    return;
+                    userUpdater.updateStatus(user, UserStatus.INVALID);
+                    facebookBrowser.closeBrowser(user);
+                    throw e;
                 }
 
                 post.setStatus(PostStatus.POSTED);

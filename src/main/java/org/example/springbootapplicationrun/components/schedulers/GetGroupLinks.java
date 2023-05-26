@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.GroupLinksServer;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -26,11 +27,13 @@ public class GetGroupLinks {
     private UserContainer userContainer;
     @Autowired
     private GroupLinksServer groupLinksServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
 
     @Scheduled (fixedRate = 3600000)
-    public void getLinks() throws IOException, InterruptedException {
+    public void getLinks() throws Exception {
 
         User user = userContainer.getFbUserByUserId(1);
 
@@ -47,21 +50,10 @@ public class GetGroupLinks {
             groupLinksServer.sendLinksToServer(links);
 
         }catch(Exception e){
-
-            user.setStatus(UserStatus.INVALID);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            facebookBrowser.closeBrowser(user);
+            return;
         }
-
-        System.out.println(currentStatus);
-
-        UserReport userReport = new UserReport();
-        UserClient userStatusServer = new UserClient();
-
-        System.out.println(currentStatus);
-        userReport.setUserStatus(user.getStatus());
-        userReport.setId(user.getId());
-
-        JSONObject userStatus = userReport.getUserStatusJSON();
-        userStatusServer.sendUserInfoToServer(userStatus);
 
     }
 

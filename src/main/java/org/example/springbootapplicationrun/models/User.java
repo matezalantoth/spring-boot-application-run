@@ -2,14 +2,29 @@ package org.example.springbootapplicationrun.models;
 
 import org.example.springbootapplicationrun.enums.UserStatus;
 
+import java.time.LocalDateTime;
+
 public class User {
 
     private String email;
-
     private String password;
-
     private Integer id;
     private UserStatus status;
+    private LocalDateTime statusChangedAt;
+
+    public LocalDateTime getStatusChangedAt() {
+        return statusChangedAt;
+    }
+
+    public void setStatusChangedAt(LocalDateTime statusChangedAt) {
+        this.statusChangedAt = statusChangedAt;
+    }
+
+
+
+    public User(){
+        setStatus(UserStatus.VALID);
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -34,6 +49,13 @@ public class User {
     }
     public UserStatus getStatus() {
         return status;
+    }
+
+    public boolean isValid(){
+        return status == UserStatus.VALID;
+    }
+    public boolean isInvalid(){
+        return status == UserStatus.INVALID;
     }
 
 
