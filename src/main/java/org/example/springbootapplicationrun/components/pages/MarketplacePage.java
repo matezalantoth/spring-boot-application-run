@@ -40,7 +40,6 @@ public class MarketplacePage {
             WebElement link = image.findElement(By.xpath("./ancestor::a"));
             System.out.println(link.getAttribute("href"));
 
-            try {
 
 
                 WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
@@ -60,9 +59,6 @@ public class MarketplacePage {
                 JSONObject jsonObject = car.getJSONInfo();
                 carsInfo.put(jsonObject);
 
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
 
         });
         return carsInfo;

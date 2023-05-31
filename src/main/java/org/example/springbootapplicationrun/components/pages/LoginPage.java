@@ -14,7 +14,7 @@ public class LoginPage {
         this.driver = driver;
     }
 
-    public void login(String email, String password, UserStatus status, Integer id) throws InterruptedException {
+    public void login(String email, String password) throws InterruptedException {
 
         
 

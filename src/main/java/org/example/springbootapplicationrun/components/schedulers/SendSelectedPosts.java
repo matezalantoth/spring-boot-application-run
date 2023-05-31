@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.GroupPostServer;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -33,9 +34,11 @@ public class SendSelectedPosts {
     private UserContainer userContainer;
     @Autowired
     private GroupPostServer groupPostServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
-    @Scheduled(fixedRate = 1_000_000, initialDelay = 10_000)
+    @Scheduled(fixedRate = 1_000_000, initialDelay = 60_000)
     public void sendSelectedPosts() {
         postContainer.schedulePosts();
         List<Post> postering = postContainer.getPosts();
@@ -45,27 +48,13 @@ public class SendSelectedPosts {
 
                 post.setStatus(PostStatus.POSTING);
                 User user = userContainer.getFbUserByUserId(post.getUserId());
-                WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(), user.getId());
 
                 UserStatus currentStatus = user.getStatus();
                 if (currentStatus == UserStatus.INVALID) {
                     return;
                 }
 
-                System.out.println(currentStatus);
-
-                UserReport userReport = new UserReport();
-                UserClient userStatusServer = new UserClient();
-
-                System.out.println(currentStatus);
-                userReport.setUserStatus(user.getStatus());
-                userReport.setId(user.getId());
-
-                JSONObject userStatus = userReport.getUserStatusJSON();
-                userStatusServer.sendUserInfoToServer(userStatus);
-
-                System.out.println(post.getTitle());
-                post.downloadImages();
+                WebDriver driver = facebookBrowser.getBrowser(user);
 
                 try {
 
@@ -73,9 +62,12 @@ public class SendSelectedPosts {
                     groupPage.sendPost(post, driver);
 
                 }catch (Exception e){
-                    user.isInvalid();
+                    String message = e.getMessage();
+                    System.out.println(message);
+                    userUpdater.updateStatus(user, UserStatus.INVALID);
+                    facebookBrowser.closeBrowser(user);
+                    throw e;
                 }
-                user.isValid();
 
                 post.setStatus(PostStatus.POSTED);
                 LocalDateTime time = LocalDateTime.from(LocalTime.now());
@@ -87,8 +79,6 @@ public class SendSelectedPosts {
 
                 JSONObject jsonObject = postReport.getPostInfo();
                 groupPostServer.sendPostReportsToServer(jsonObject);
-                Thread.sleep(25000);
-                driver.get("https://www.facebook.com");
                 Thread.sleep(2000);
 
             }catch (Exception e){

@@ -26,7 +26,7 @@ public class DownloadScheduledPosts {
     private PostContainer postContainer;
     @Autowired
     private PostClient postClient;
-//    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 60_000)
     public void downloadPosts() throws IOException{
         JSONObject result = postClient.getPosts();
         JSONArray posts = result.getJSONArray("data");
@@ -54,6 +54,11 @@ public class DownloadScheduledPosts {
                 JSONObject imaginging = (JSONObject) image;
                 Image newImage = new Image();
                 newImage.setUrl(imaginging.getString("url"));
+                try {
+                    newImage.download();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 imaging.add(newImage);
             });
             poster.setImages(imaging);

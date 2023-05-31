@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -27,14 +28,16 @@ public class DownloadMarketplaceCars {
     private UserContainer userContainer;
     @Autowired
     private CarServer carServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
     @Scheduled(fixedRate = 3_600_000)
-    public void downloadCars() throws InterruptedException, IOException {
+    public void downloadCars() throws Exception {
 
         User user = userContainer.getFbUserByUserId(3);
 
-        WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(), user.getId());
+        WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
         if (currentStatus == UserStatus.INVALID){
@@ -47,9 +50,12 @@ public class DownloadMarketplaceCars {
             carServer.sendCarsToServer(cars);
 
         }catch(Exception e){
-            user.isInvalid();
+            String message = e.getMessage();
+            System.out.println(message);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            facebookBrowser.closeBrowser(user);
+            return;
         }
-        user.isValid();
 
         String time = String.valueOf(Instant.now().getEpochSecond());
         System.out.println(time);
@@ -57,17 +63,7 @@ public class DownloadMarketplaceCars {
         driver.get("https://www.facebook.com");
         Thread.sleep(2000);
 
-        System.out.println(currentStatus);
 
-        UserReport userReport = new UserReport();
-        UserClient userStatusServer = new UserClient();
-
-        System.out.println(currentStatus);
-        userReport.setUserStatus(user.getStatus());
-        userReport.setId(user.getId());
-
-        JSONObject userStatus = userReport.getUserStatusJSON();
-        userStatusServer.sendUserInfoToServer(userStatus);
 
 
     }

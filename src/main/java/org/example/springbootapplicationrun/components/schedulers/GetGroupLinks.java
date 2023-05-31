@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.GroupLinksServer;
 import org.example.springbootapplicationrun.components.clients.UserClient;
@@ -26,15 +27,17 @@ public class GetGroupLinks {
     private UserContainer userContainer;
     @Autowired
     private GroupLinksServer groupLinksServer;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
 
-    @Scheduled (fixedRate = 3600000)
-    public void getLinks() throws IOException, InterruptedException {
+//    @Scheduled (fixedRate = 3600000)
+    public void getLinks() throws Exception {
 
         User user = userContainer.getFbUserByUserId(1);
 
-        WebDriver driver = facebookBrowser.getBrowser(user.getEmail(), user.getPassword(), user.getStatus(),user.getId());
+        WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
         if (currentStatus == UserStatus.INVALID){
@@ -47,22 +50,12 @@ public class GetGroupLinks {
             groupLinksServer.sendLinksToServer(links);
 
         }catch(Exception e){
-
-            user.isInvalid();
+            String message = e.getMessage();
+            System.out.println(message);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            facebookBrowser.closeBrowser(user);
+            return;
         }
-        user.isValid();
-
-        System.out.println(currentStatus);
-
-        UserReport userReport = new UserReport();
-        UserClient userStatusServer = new UserClient();
-
-        System.out.println(currentStatus);
-        userReport.setUserStatus(user.getStatus());
-        userReport.setId(user.getId());
-
-        JSONObject userStatus = userReport.getUserStatusJSON();
-        userStatusServer.sendUserInfoToServer(userStatus);
 
     }
 
