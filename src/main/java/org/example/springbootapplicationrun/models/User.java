@@ -57,6 +57,9 @@ public class User {
     public boolean isInvalid(){
         return status == UserStatus.INVALID;
     }
+    public boolean isUnderReview(){
+        return status == UserStatus.UNDER_REVIEW;
+    }
 
 
 

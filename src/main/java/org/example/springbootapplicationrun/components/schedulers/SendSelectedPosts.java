@@ -64,7 +64,7 @@ public class SendSelectedPosts {
                 }catch (Exception e){
                     String message = e.getMessage();
                     System.out.println(message);
-                    userUpdater.updateStatus(user, UserStatus.INVALID);
+                    userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
                     facebookBrowser.closeBrowser(user);
                     throw e;
                 }

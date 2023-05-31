@@ -56,16 +56,16 @@ public class UserContainer {
         return user;
     }
 
-    public List<User> getInvalidUsers(){
-        List<User> invalidUsers = new ArrayList<>();
+    public List<User> getUnderReviewUsers(){
+        List<User> UnderReviewUsers = new ArrayList<>();
         fbUsers.forEach((userId, user) ->{
-            if (user.isInvalid()){
+            if (user.isUnderReview()){
 
-                invalidUsers.add(user);
+                UnderReviewUsers.add(user);
             }
         });
 
-        return invalidUsers;
+        return UnderReviewUsers;
     }
 
 
