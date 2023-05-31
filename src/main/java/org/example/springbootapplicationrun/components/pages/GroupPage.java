@@ -28,7 +28,7 @@ public class GroupPage {
             Thread.sleep(2000);
 
             form.findElement(By.xpath("(//div [@aria-label = 'Write something...'])[2]")).sendKeys(post.getTitle() + "\n" + post.getPrice() + "\n" + post.getDescription() + "\n" + post.getLink());
-            Thread.sleep(25_000);
+            Thread.sleep(30_000);
 
             form.findElement(By.xpath("(//div [@aria-label = 'Post'])[2]")).click();
             Thread.sleep(2000);
