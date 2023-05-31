@@ -38,7 +38,7 @@ public class SendSelectedPosts {
     private UserUpdater userUpdater;
 
 
-    @Scheduled(fixedRate = 1_000_000, initialDelay = 10_000)
+    @Scheduled(fixedRate = 1_000_000, initialDelay = 60_000)
     public void sendSelectedPosts() {
         postContainer.schedulePosts();
         List<Post> postering = postContainer.getPosts();
@@ -62,6 +62,8 @@ public class SendSelectedPosts {
                     groupPage.sendPost(post, driver);
 
                 }catch (Exception e){
+                    String message = e.getMessage();
+                    System.out.println(message);
                     userUpdater.updateStatus(user, UserStatus.INVALID);
                     facebookBrowser.closeBrowser(user);
                     throw e;
@@ -77,8 +79,6 @@ public class SendSelectedPosts {
 
                 JSONObject jsonObject = postReport.getPostInfo();
                 groupPostServer.sendPostReportsToServer(jsonObject);
-                Thread.sleep(25000);
-                driver.get("https://www.facebook.com");
                 Thread.sleep(2000);
 
             }catch (Exception e){

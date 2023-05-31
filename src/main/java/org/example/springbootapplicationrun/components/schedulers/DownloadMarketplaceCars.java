@@ -50,6 +50,8 @@ public class DownloadMarketplaceCars {
             carServer.sendCarsToServer(cars);
 
         }catch(Exception e){
+            String message = e.getMessage();
+            System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.INVALID);
             facebookBrowser.closeBrowser(user);
             return;

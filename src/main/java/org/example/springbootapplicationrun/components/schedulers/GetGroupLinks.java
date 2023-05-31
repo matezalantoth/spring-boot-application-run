@@ -32,7 +32,7 @@ public class GetGroupLinks {
 
 
 
-    @Scheduled (fixedRate = 3600000)
+//    @Scheduled (fixedRate = 3600000)
     public void getLinks() throws Exception {
 
         User user = userContainer.getFbUserByUserId(1);
@@ -50,6 +50,8 @@ public class GetGroupLinks {
             groupLinksServer.sendLinksToServer(links);
 
         }catch(Exception e){
+            String message = e.getMessage();
+            System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.INVALID);
             facebookBrowser.closeBrowser(user);
             return;
