@@ -57,6 +57,7 @@ public class DownloadScheduledPosts {
                 JSONObject imaginging = (JSONObject) image;
                 Image newImage = new Image();
                 newImage.setUrl(imaginging.getString("url"));
+                newImage.setPostId(poster.getPostId());
                 try {
                     newImage.download();
                 } catch (InterruptedException e) {

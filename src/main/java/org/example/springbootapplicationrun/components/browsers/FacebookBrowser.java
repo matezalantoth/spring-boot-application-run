@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
@@ -19,6 +20,8 @@ public class FacebookBrowser {
 
     @Autowired
     private UserUpdater userUpdater;
+    @Value("${chrome.driver.path}")
+    String chromePath;
     private LinkedHashMap<String, WebDriver> drivers;
     public FacebookBrowser() {
         drivers = new LinkedHashMap<>();
@@ -44,14 +47,13 @@ public class FacebookBrowser {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        String chromeDriverPath = "drivers/chromedriver";
         String path = "";
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--log-path=" + path + chromeDriverPath);
+        chromeOptions.addArguments("--log-path=" + path + chromePath);
         chromeOptions.addArguments("--disable-notifications");
         chromeOptions.addArguments("--no-sandbox");
-        System.setProperty("webdriver.chrome.driver", path + chromeDriverPath);
+        System.setProperty("webdriver.chrome.driver", path + chromePath);
         WebDriver driver = new ChromeDriver(chromeOptions);
         driver.manage().window().maximize();
 
