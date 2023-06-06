@@ -54,7 +54,6 @@ public class GetGroupLinks {
             System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
             facebookBrowser.closeBrowser(user);
-            return;
         }
 
     }

@@ -1,5 +1,7 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.checkerframework.checker.units.qual.A;
+import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.enums.UserStatus;
@@ -19,31 +21,48 @@ public class UserReviewer {
     private UserContainer userContainer;
     @Autowired
     private FacebookBrowser facebookBrowser;
+    @Autowired
+    private UserUpdater userUpdater;
     @Scheduled(fixedRate = 60_000)
     public void reviewUsers(){
+
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();
         underReviewUsers.forEach(user -> {
             LocalDateTime changedAt = user.getStatusChangedAt();
-            WebDriver driver = null;
+
+            if(changedAt.plusMinutes(30).isBefore(LocalDateTime.now())) {
+                return;
+            }
+
+            WebDriver driver;
+
             try {
                 driver = facebookBrowser.getBrowser(user);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                userInvalidator(e, user);
+                return;
             }
-            if(changedAt.plusMinutes(30).isAfter(LocalDateTime.now())){
-                try {
-                    driver.findElement(By.xpath("//span [@class][contains(text(), 'What's on your mind')]/parent::div/parent::div")).click();
-                }catch (Exception e){
-                    String message = e.getMessage();
-                    System.out.println(message);
-                    user.setStatus(UserStatus.INVALID);
-                    facebookBrowser.closeBrowser(user);
-                    throw e;
-                }
-                user.setStatus(UserStatus.VALID);
+
+            try {
+                driver.get("https://www.facebook.com");
+                driver.findElement(By.xpath("//span [@class][contains(text(), 'What's on your mind')] /parent::div/parent::div")).click();
+            }catch (Exception e){
+                userInvalidator(e, user);
+                return;
             }
+
+            userUpdater.updateStatus(user, UserStatus.VALID);
+
         });
 
+        }
+
+        protected void userInvalidator(Exception e, User user){
+
+            String message = e.getMessage();
+            System.out.println(message);
+            userUpdater.updateStatus(user, UserStatus.INVALID);
+            facebookBrowser.closeBrowser(user);
 
         }
 
