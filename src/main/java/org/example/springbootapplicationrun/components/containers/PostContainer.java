@@ -28,18 +28,21 @@ public class PostContainer {
 
     }
 
+    public boolean doesPostExist(Integer postId){
+        return posts.containsKey(postId);
+    }
+
     private void schedulePost(Post post){
         if(!post.isDownloaded()){
             return;
         }
         LocalDateTime schedule = post.getScheduledTo();
 
-        if(schedule.isBefore(LocalDateTime.now())) {
-            post.setStatus(PostStatus.SCHEDULED);
+        if(schedule.isAfter(LocalDateTime.now())){
+            return;
         }
-        if(schedule.isEqual(LocalDateTime.now())) {
-            post.setStatus(PostStatus.SCHEDULED);
-        }
+        post.setStatus(PostStatus.SCHEDULED);
+
     }
 
     public List<Post> getPosts(){

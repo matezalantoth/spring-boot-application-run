@@ -38,7 +38,7 @@ public class SendSelectedPosts {
     private UserUpdater userUpdater;
 
 
-    @Scheduled(fixedRate = 1_000_000, initialDelay = 60_000)
+    @Scheduled(fixedRate = 1_000_000, initialDelay = 300_000)
     public void sendSelectedPosts() {
         postContainer.schedulePosts();
         List<Post> postering = postContainer.getPosts();
@@ -65,20 +65,19 @@ public class SendSelectedPosts {
                     String message = e.getMessage();
                     System.out.println(message);
                     userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
-                    facebookBrowser.closeBrowser(user);
                     throw e;
                 }
 
                 post.setStatus(PostStatus.POSTED);
-                LocalDateTime time = LocalDateTime.from(LocalTime.now());
+//                LocalDateTime time = LocalDateTime.from(LocalTime.now());
 
-                PostReport postReport = new PostReport();
-                postReport.setPostedAt(time);
-                postReport.setPostId(post.getPostId());
-                postReport.setPostStatus(post.getStatus());
-
-                JSONObject jsonObject = postReport.getPostInfo();
-                groupPostServer.sendPostReportsToServer(jsonObject);
+//                PostReport postReport = new PostReport();
+//                postReport.setPostedAt(time);
+//                postReport.setPostId(post.getPostId());
+//                postReport.setPostStatus(post.getStatus());
+//
+//                JSONObject jsonObject = postReport.getPostInfo();
+//                groupPostServer.sendPostReportsToServer(jsonObject);
                 Thread.sleep(2000);
 
             }catch (Exception e){

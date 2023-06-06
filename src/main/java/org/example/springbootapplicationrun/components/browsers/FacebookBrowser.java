@@ -62,8 +62,7 @@ public class FacebookBrowser {
             loginPage.login(email, password);
 
         }catch(Exception e){
-            userUpdater.updateStatus(user, UserStatus.INVALID);
-            closeBrowser(user);
+            userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
             throw e;
         }
 

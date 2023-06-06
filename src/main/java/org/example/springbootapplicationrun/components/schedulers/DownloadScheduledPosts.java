@@ -26,7 +26,7 @@ public class DownloadScheduledPosts {
     private PostContainer postContainer;
     @Autowired
     private PostClient postClient;
-    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 120_000)
     public void downloadPosts() throws IOException{
         JSONObject result = postClient.getPosts();
         JSONArray posts = result.getJSONArray("data");
@@ -34,10 +34,13 @@ public class DownloadScheduledPosts {
             System.out.println(post);
             JSONObject posting = (JSONObject) post;
             Post poster = new Post();
+            Integer postId = (posting.getInt("id"));
+            if(postContainer.doesPostExist(postId)){
+               return;
+            }
             poster.setScheduledTo(LocalDateTime.parse(posting.getString("scheduledTo"), DateTimeFormatter.ISO_DATE_TIME));
             BigInteger facebookGroupId = (posting.getJSONObject("facebook_group").getBigInteger("groupId"));
             poster.setFacebookGroupId(facebookGroupId);
-            Integer postId = (posting.getInt("id"));
             poster.setPostId(postId);
             Integer userId = (posting.getInt("userId"));
             poster.setUserId(userId);
