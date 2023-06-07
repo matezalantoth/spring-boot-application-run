@@ -31,11 +31,9 @@ public class DownloadMarketplaceCars {
     @Autowired
     private UserUpdater userUpdater;
 
+    public void downloadCars(Integer userId) throws Exception {
 
-    @Scheduled(fixedRate = 3_600_000)
-    public void downloadCars() throws Exception {
-
-        User user = userContainer.getFbUserByUserId(3);
+        User user = userContainer.getFbUserByUserId(userId);
 
         WebDriver driver = facebookBrowser.getBrowser(user);
 

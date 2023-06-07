@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.models;
 
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,16 @@ public class User {
     private Integer id;
     private UserStatus status;
     private LocalDateTime statusChangedAt;
+
+    public JSONObject getUserData() {
+        return userData;
+    }
+
+    public void setUserData(JSONObject userData) {
+        this.userData = userData;
+    }
+
+    private JSONObject userData;
 
     public LocalDateTime getStatusChangedAt() {
         return statusChangedAt;

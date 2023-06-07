@@ -38,7 +38,7 @@ public class SendSelectedPosts {
     private UserUpdater userUpdater;
 
 
-    @Scheduled(fixedRate = 1_000_000, initialDelay = 300_000)
+//    @Scheduled(fixedRate = 1_000_000, initialDelay = 300_000)
     public void sendSelectedPosts() {
         postContainer.schedulePosts();
         List<Post> postering = postContainer.getPosts();
