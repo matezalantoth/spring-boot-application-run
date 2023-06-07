@@ -26,7 +26,7 @@ public class UserReport {
         this.id = id;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return id;
     }
 
@@ -39,19 +39,13 @@ public class UserReport {
     }
 
 
-
-
-
-
-    public JSONObject getUserStatusJSON(){
+    public JSONObject getUserStatusJSON() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userStatus", userStatus);
         jsonObject.put("id", id);
         jsonObject.put("statusChangedAt", statusChangedAt);
         return jsonObject;
     }
-
-
 
 
 }

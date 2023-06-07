@@ -14,6 +14,7 @@ public class Encrypter {
     private static SecretKeySpec secretKey;
     private static byte[] key;
     private static final String ALGORITHM = "AES";
+
     public void prepareSecreteKey(String myKey) {
         MessageDigest sha = null;
         try {

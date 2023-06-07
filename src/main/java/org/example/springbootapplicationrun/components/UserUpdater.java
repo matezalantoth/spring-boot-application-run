@@ -17,7 +17,7 @@ public class UserUpdater {
     @Autowired
     private UserClient userClient;
 
-    public void updateStatus(User user, UserStatus status){
+    public void updateStatus(User user, UserStatus status) {
 
         LocalDateTime time = LocalDateTime.now();
 
@@ -30,8 +30,6 @@ public class UserUpdater {
         userReport.setId(user.getId());
         userReport.setUserStatus(user.getStatus());
         userReport.setStatusChangedAt(user.getStatusChangedAt());
-
-
 
 
         JSONObject userStatus = userReport.getUserStatusJSON();

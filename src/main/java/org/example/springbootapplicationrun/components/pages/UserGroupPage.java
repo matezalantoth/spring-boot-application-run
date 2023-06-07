@@ -16,7 +16,9 @@ public class UserGroupPage {
     WebDriver driver;
 
 
-    public UserGroupPage(WebDriver driver) {this.driver = driver;}
+    public UserGroupPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public JSONArray getGroups() throws InterruptedException {
 
@@ -28,7 +30,7 @@ public class UserGroupPage {
 
         scrollDown();
 
-            driver.findElements(By.xpath("//a [@aria-label='View group']")).forEach(groupLink -> {
+        driver.findElements(By.xpath("//a [@aria-label='View group']")).forEach(groupLink -> {
 
             GroupInfo group = new GroupInfo();
 
@@ -46,7 +48,7 @@ public class UserGroupPage {
 
 
         });
-    return groups;
+        return groups;
 
     }
 
@@ -63,8 +65,6 @@ public class UserGroupPage {
 
 
     }
-
-
 
 
 }

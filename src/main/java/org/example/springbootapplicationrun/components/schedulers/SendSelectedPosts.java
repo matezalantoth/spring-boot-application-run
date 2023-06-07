@@ -61,7 +61,7 @@ public class SendSelectedPosts {
                     GroupPage groupPage = new GroupPage();
                     groupPage.sendPost(post, driver);
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     String message = e.getMessage();
                     System.out.println(message);
                     userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
@@ -80,7 +80,7 @@ public class SendSelectedPosts {
 //                groupPostServer.sendPostReportsToServer(jsonObject);
                 Thread.sleep(2000);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 post.setStatus(PostStatus.FAILED);
             }
         }

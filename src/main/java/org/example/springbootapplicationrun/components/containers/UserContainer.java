@@ -43,7 +43,7 @@ public class UserContainer {
 
     public User getFbUserByUserId(Integer userId) throws IOException {
         User user = fbUsers.get(userId);
-        if(user != null){
+        if (user != null) {
             return user;
         }
         User newUser = buildUser(userId);
@@ -56,10 +56,10 @@ public class UserContainer {
         return user;
     }
 
-    public List<User> getUnderReviewUsers(){
+    public List<User> getUnderReviewUsers() {
         List<User> UnderReviewUsers = new ArrayList<>();
-        fbUsers.forEach((userId, user) ->{
-            if (user.isUnderReview()){
+        fbUsers.forEach((userId, user) -> {
+            if (user.isUnderReview()) {
 
                 UnderReviewUsers.add(user);
             }

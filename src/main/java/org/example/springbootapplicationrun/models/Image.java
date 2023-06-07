@@ -34,11 +34,11 @@ public class Image {
         this.localLink = localLink;
     }
 
-    public String getLocalLink(){
+    public String getLocalLink() {
         return localLink;
     }
 
-    public void download() throws InterruptedException{
+    public void download() throws InterruptedException {
 
         try {
             URL webUrl = new URL(url);
@@ -51,7 +51,7 @@ public class Image {
             final String path = "images/" + postId;
 
             File directory = new File(path);
-            if (!directory.exists()){
+            if (!directory.exists()) {
                 directory.mkdir();
             }
 

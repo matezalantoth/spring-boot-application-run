@@ -19,7 +19,6 @@ public class GroupInfo {
     }
 
 
-
     public String getImage() {
         return image;
     }
@@ -36,14 +35,13 @@ public class GroupInfo {
         this.link = link;
     }
 
-    public JSONObject getJSONGroupInfo(){
+    public JSONObject getJSONGroupInfo() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("link", link);
         jsonObject.put("name", name);
         jsonObject.put("image", image);
         return jsonObject;
     }
-
 
 
 }

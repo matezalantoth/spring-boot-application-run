@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 @Component
 public class PostContainer {
 
@@ -17,9 +18,10 @@ public class PostContainer {
         posts = new LinkedHashMap<>();
 
     }
-    public void addPost(Post post){
+
+    public void addPost(Post post) {
         Integer postId = post.getPostId();
-        if(posts.containsKey(postId)){
+        if (posts.containsKey(postId)) {
             return;
         }
         posts.put(postId, post);
@@ -28,27 +30,27 @@ public class PostContainer {
 
     }
 
-    public boolean doesPostExist(Integer postId){
+    public boolean doesPostExist(Integer postId) {
         return posts.containsKey(postId);
     }
 
-    private void schedulePost(Post post){
-        if(!post.isDownloaded()){
+    private void schedulePost(Post post) {
+        if (!post.isDownloaded()) {
             return;
         }
         LocalDateTime schedule = post.getScheduledTo();
 
-        if(schedule.isAfter(LocalDateTime.now())){
+        if (schedule.isAfter(LocalDateTime.now())) {
             return;
         }
         post.setStatus(PostStatus.SCHEDULED);
 
     }
 
-    public List<Post> getPosts(){
+    public List<Post> getPosts() {
         List<Post> selectedPosts = new ArrayList<>();
-        posts.forEach((postId, post) ->{
-            if (post.isScheduled()){
+        posts.forEach((postId, post) -> {
+            if (post.isScheduled()) {
 
                 selectedPosts.add(post);
             }
@@ -57,14 +59,12 @@ public class PostContainer {
         return selectedPosts;
     }
 
-    public void schedulePosts(){
-        posts.forEach((postId, post) ->{
+    public void schedulePosts() {
+        posts.forEach((postId, post) -> {
             schedulePost(post);
         });
 
     }
-
-
 
 
 }

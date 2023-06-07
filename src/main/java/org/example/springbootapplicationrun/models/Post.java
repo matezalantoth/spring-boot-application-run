@@ -27,7 +27,7 @@ public class Post {
     }
 
 
-    public Post(){
+    public Post() {
         status = PostStatus.PENDING;
     }
 
@@ -35,7 +35,8 @@ public class Post {
     public void setStatus(PostStatus status) {
         this.status = status;
     }
-    public PostStatus getStatus(){
+
+    public PostStatus getStatus() {
         return status;
     }
 
@@ -46,9 +47,11 @@ public class Post {
     public boolean isScheduled() {
         return status == PostStatus.SCHEDULED;
     }
+
     public void setFacebookGroupId(BigInteger facebookGroupId) {
         this.facebookGroupId = facebookGroupId;
     }
+
     public BigInteger getFacebookGroupId() {
         return facebookGroupId;
     }
