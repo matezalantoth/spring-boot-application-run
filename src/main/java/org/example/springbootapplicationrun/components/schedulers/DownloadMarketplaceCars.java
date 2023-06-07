@@ -40,7 +40,7 @@ public class DownloadMarketplaceCars {
         WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
-        if (currentStatus == UserStatus.INVALID){
+        if (currentStatus == UserStatus.INVALID) {
             return;
         }
         try {
@@ -49,7 +49,7 @@ public class DownloadMarketplaceCars {
             JSONArray cars = marketplacePage.getCars();
             carServer.sendCarsToServer(cars);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             String message = e.getMessage();
             System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
@@ -61,8 +61,6 @@ public class DownloadMarketplaceCars {
 
         driver.get("https://www.facebook.com");
         Thread.sleep(2000);
-
-
 
 
     }

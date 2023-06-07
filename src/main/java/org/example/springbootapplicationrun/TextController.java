@@ -10,14 +10,14 @@ public class TextController {
 
 
     @RequestMapping("/mate")
-    public String hello(){
+    public String hello() {
 
         return "hi";
     }
 
     @RequestMapping("/apa")
     public String bonjour() throws IOException {
-       return "bonjour";
+        return "bonjour";
     }
 
 

@@ -10,15 +10,16 @@ public class TokenContainer {
 
     private Token token;
 
-    public String getToken(){
+    public String getToken() {
 
         return token.getAuthenticationToken();
     }
-    public LocalDateTime getExpiresAt(){
+
+    public LocalDateTime getExpiresAt() {
         return token.getExpiresAt();
     }
 
-    public void setToken (Token token){
+    public void setToken(Token token) {
         this.token = token;
     }
 

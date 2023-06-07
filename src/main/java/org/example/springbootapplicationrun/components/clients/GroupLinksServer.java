@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class GroupLinksServer {
 
-    public void sendLinksToServer(JSONArray linksJSON){
+    public void sendLinksToServer(JSONArray linksJSON) {
         WebClient.create("groups.thesoftwareadvisor.co.uk/links")
                 .post()
                 .body(Mono.just(linksJSON), JSONArray.class)

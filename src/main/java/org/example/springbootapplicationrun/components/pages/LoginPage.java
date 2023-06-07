@@ -16,25 +16,21 @@ public class LoginPage {
 
     public void login(String email, String password) throws InterruptedException {
 
-        
 
-            driver.get("https://www.facebook.com/login/");
+        driver.get("https://www.facebook.com/login/");
 
-            driver.findElement(By.xpath("//button[@data-cookiebanner='accept_button']")).click();
-            Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[@data-cookiebanner='accept_button']")).click();
+        Thread.sleep(5000);
 
-            driver.findElement(By.xpath("//input[@id='email']")).sendKeys(email);
-            Thread.sleep(10000);
+        driver.findElement(By.xpath("//input[@id='email']")).sendKeys(email);
+        Thread.sleep(10000);
 
-            driver.findElement(By.xpath("//input[@id='pass']")).sendKeys(password);
-            Thread.sleep(5000);
+        driver.findElement(By.xpath("//input[@id='pass']")).sendKeys(password);
+        Thread.sleep(5000);
 
-            driver.findElement(By.xpath("//button[@type='submit']")).click();
-            Thread.sleep(5000);
-            
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        Thread.sleep(5000);
 
-        
-        
 
     }
 

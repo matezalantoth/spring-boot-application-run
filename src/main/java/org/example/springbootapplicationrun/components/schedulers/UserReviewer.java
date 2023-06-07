@@ -23,14 +23,15 @@ public class UserReviewer {
     private FacebookBrowser facebookBrowser;
     @Autowired
     private UserUpdater userUpdater;
+
     @Scheduled(fixedRate = 60_000)
-    public void reviewUsers(){
+    public void reviewUsers() {
 
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();
         underReviewUsers.forEach(user -> {
             LocalDateTime changedAt = user.getStatusChangedAt();
 
-            if(changedAt.plusMinutes(30).isBefore(LocalDateTime.now())) {
+            if (changedAt.plusMinutes(30).isBefore(LocalDateTime.now())) {
                 return;
             }
 
@@ -46,7 +47,7 @@ public class UserReviewer {
             try {
                 driver.get("https://www.facebook.com");
                 driver.findElement(By.xpath("//span [@class][contains(text(), 'What's on your mind')] /parent::div/parent::div")).click();
-            }catch (Exception e){
+            } catch (Exception e) {
                 userInvalidator(e, user);
                 return;
             }
@@ -55,16 +56,16 @@ public class UserReviewer {
 
         });
 
-        }
+    }
 
-        protected void userInvalidator(Exception e, User user){
+    protected void userInvalidator(Exception e, User user) {
 
-            String message = e.getMessage();
-            System.out.println(message);
-            userUpdater.updateStatus(user, UserStatus.INVALID);
-            facebookBrowser.closeBrowser(user);
-
-        }
+        String message = e.getMessage();
+        System.out.println(message);
+        userUpdater.updateStatus(user, UserStatus.INVALID);
+        facebookBrowser.closeBrowser(user);
 
     }
+
+}
 

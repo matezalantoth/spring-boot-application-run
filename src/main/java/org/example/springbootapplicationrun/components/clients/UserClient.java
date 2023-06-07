@@ -5,10 +5,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 @Component
 public class UserClient {
 
-    public void sendUserInfoToServer(JSONObject userReport){
+    public void sendUserInfoToServer(JSONObject userReport) {
         System.out.println(userReport);
 //        WebClient.create("users.thesoftwareadvisor.co.uk/userStatus")
 //                .post()

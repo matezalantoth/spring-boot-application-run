@@ -17,21 +17,21 @@ public class GroupPage {
         driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId());
         Thread.sleep(2000);
 
-            driver.findElement(By.xpath("//span[text() = 'Write something...']")).click();
-            Thread.sleep(2000);
+        driver.findElement(By.xpath("//span[text() = 'Write something...']")).click();
+        Thread.sleep(2000);
 
-            WebElement form = driver.findElement(By.xpath("(//form[@method = 'POST'])[2]"));
-            WebElement formfield = form.findElement(By.xpath("//div[@aria-label = 'Write something...']"));
-            Thread.sleep(2000);
+        WebElement form = driver.findElement(By.xpath("(//form[@method = 'POST'])[2]"));
+        WebElement formfield = form.findElement(By.xpath("//div[@aria-label = 'Write something...']"));
+        Thread.sleep(2000);
 
-            form.findElement(By.xpath("//input [@type='file']")).sendKeys(post.getImageLocation());
-            Thread.sleep(60_000);
+        form.findElement(By.xpath("//input [@type='file']")).sendKeys(post.getImageLocation());
+        Thread.sleep(60_000);
 
-            form.findElement(By.xpath("(//div [@aria-label = 'Write something...'])[2]")).sendKeys(post.getTitle() + "\n" + post.getPrice() + "\n" + post.getDescription() + "\n" + post.getLink());
-            Thread.sleep(5000);
+        form.findElement(By.xpath("(//div [@aria-label = 'Write something...'])[2]")).sendKeys(post.getTitle() + "\n" + post.getPrice() + "\n" + post.getDescription() + "\n" + post.getLink());
+        Thread.sleep(5000);
 
-            form.findElement(By.xpath("(//div [@aria-label = 'Post'])[2]")).click();
-            Thread.sleep(10_000);
+        form.findElement(By.xpath("(//div [@aria-label = 'Post'])[2]")).click();
+        Thread.sleep(10_000);
 
 
     }

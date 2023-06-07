@@ -8,17 +8,19 @@ public class Token {
 
     private LocalDateTime expiresAt;
 
-    public void setAuthenticationToken(String authenticationToken){
+    public void setAuthenticationToken(String authenticationToken) {
         this.authenticationToken = authenticationToken;
     }
 
-    public String getAuthenticationToken(){
+    public String getAuthenticationToken() {
         return authenticationToken;
     }
-    public void setExpiresAt(LocalDateTime expiresAt){
+
+    public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
     }
-    public LocalDateTime getExpiresAt(){
+
+    public LocalDateTime getExpiresAt() {
         return expiresAt;
     }
 }

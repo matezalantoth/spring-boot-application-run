@@ -41,23 +41,22 @@ public class MarketplacePage {
             System.out.println(link.getAttribute("href"));
 
 
+            WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
+            System.out.println(distance.getText());
 
-                WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
-                System.out.println(distance.getText());
+            WebElement price = link.findElement(By.xpath("./div/div/following-sibling::div/div/span/div/span"));
+            System.out.println(price.getText());
 
-                WebElement price = link.findElement(By.xpath("./div/div/following-sibling::div/div/span/div/span"));
-                System.out.println(price.getText());
+            Car car = new Car();
 
-                Car car = new Car();
+            car.setTitle(image.getAttribute("alt"));
+            car.setImage(image.getAttribute("src"));
+            car.setLink(link.getAttribute("href"));
+            car.setPrice(price.getText());
+            car.setDistance(distance.getText());
 
-                car.setTitle(image.getAttribute("alt"));
-                car.setImage(image.getAttribute("src"));
-                car.setLink(link.getAttribute("href"));
-                car.setPrice(price.getText());
-                car.setDistance(distance.getText());
-
-                JSONObject jsonObject = car.getJSONInfo();
-                carsInfo.put(jsonObject);
+            JSONObject jsonObject = car.getJSONInfo();
+            carsInfo.put(jsonObject);
 
 
         });

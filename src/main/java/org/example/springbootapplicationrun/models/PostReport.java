@@ -13,6 +13,7 @@ public class PostReport {
     public Integer getPostId() {
         return postId;
     }
+
     public void setPostId(Integer postId) {
         this.postId = postId;
     }
@@ -21,11 +22,11 @@ public class PostReport {
         return postedAt;
     }
 
-    public void setPostStatus(PostStatus postStatus){
+    public void setPostStatus(PostStatus postStatus) {
         this.postStatus = postStatus;
     }
 
-    public PostStatus getPostStatus(){
+    public PostStatus getPostStatus() {
         return postStatus;
     }
 
@@ -33,17 +34,13 @@ public class PostReport {
         this.postedAt = postedAt;
     }
 
-    public JSONObject getPostInfo(){
+    public JSONObject getPostInfo() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("postedAt", postedAt);
         jsonObject.put("postId", postId);
         jsonObject.put("postStatus", postStatus.name());
         return jsonObject;
     }
-
-
-
-
 
 
 }

@@ -31,8 +31,7 @@ public class GetGroupLinks {
     private UserUpdater userUpdater;
 
 
-
-//    @Scheduled (fixedRate = 3600000)
+    //    @Scheduled (fixedRate = 3600000)
     public void getLinks() throws Exception {
 
         User user = userContainer.getFbUserByUserId(1);
@@ -40,7 +39,7 @@ public class GetGroupLinks {
         WebDriver driver = facebookBrowser.getBrowser(user);
 
         UserStatus currentStatus = user.getStatus();
-        if (currentStatus == UserStatus.INVALID){
+        if (currentStatus == UserStatus.INVALID) {
             return;
         }
         try {
@@ -49,7 +48,7 @@ public class GetGroupLinks {
             JSONArray links = userGroupPage.getGroups();
             groupLinksServer.sendLinksToServer(links);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             String message = e.getMessage();
             System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);

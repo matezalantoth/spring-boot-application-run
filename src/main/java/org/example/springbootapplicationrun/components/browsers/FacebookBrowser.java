@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
+
 @Component
 public class FacebookBrowser {
 
@@ -23,14 +24,16 @@ public class FacebookBrowser {
     @Value("${chrome.driver.path}")
     String chromePath;
     private LinkedHashMap<String, WebDriver> drivers;
+
     public FacebookBrowser() {
         drivers = new LinkedHashMap<>();
 
     }
+
     public WebDriver getBrowser(User user) throws Exception {
         String email = user.getEmail();
-        if (drivers.containsKey(email)){
-            return  drivers.get(email);
+        if (drivers.containsKey(email)) {
+            return drivers.get(email);
         }
 
 
@@ -40,7 +43,7 @@ public class FacebookBrowser {
 
     protected WebDriver createAndLogin(User user) throws Exception {
 
-        if (user.getStatus() == UserStatus.INVALID){
+        if (user.getStatus() == UserStatus.INVALID) {
             throw new Exception("User INVALID");
         }
 
@@ -63,20 +66,20 @@ public class FacebookBrowser {
             LoginPage loginPage = new LoginPage(driver);
             loginPage.login(email, password);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
             throw e;
         }
 
-        drivers.put(email,driver);
+        drivers.put(email, driver);
 
         return driver;
 
     }
 
-    public void closeBrowser(User user){
+    public void closeBrowser(User user) {
         String email = user.getEmail();
-        if (!drivers.containsKey(email)){
+        if (!drivers.containsKey(email)) {
             return;
         }
         WebDriver driver = drivers.get(email);

@@ -21,47 +21,53 @@ public class User {
     }
 
 
-
-    public User(){
+    public User() {
         setStatus(UserStatus.VALID);
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Integer getId() {
         return id;
     }
+
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
     public UserStatus getStatus() {
         return status;
     }
 
-    public boolean isValid(){
+    public boolean isValid() {
         return status == UserStatus.VALID;
     }
-    public boolean isInvalid(){
+
+    public boolean isInvalid() {
         return status == UserStatus.INVALID;
     }
-    public boolean isUnderReview(){
+
+    public boolean isUnderReview() {
         return status == UserStatus.UNDER_REVIEW;
     }
-
-
 
 
 }
