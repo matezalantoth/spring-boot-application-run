@@ -6,7 +6,9 @@ import org.example.springbootapplicationrun.components.clients.GroupLinksServer;
 import org.example.springbootapplicationrun.components.clients.UserClient;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.pages.UserGroupPage;
+import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.GroupInfo;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONArray;
@@ -31,10 +33,11 @@ public class GetGroupLinks {
     private UserUpdater userUpdater;
 
 
-    //    @Scheduled (fixedRate = 3600000)
-    public void getLinks() throws Exception {
+    public void getLinks(Integer userId, GroupInfo groupInfo) throws Exception {
 
-        User user = userContainer.getFbUserByUserId(1);
+        groupInfo.setStatus(GetGroupsStatus.IN_PROGRESS);
+
+        User user = userContainer.getFbUserByUserId(userId);
 
         WebDriver driver = facebookBrowser.getBrowser(user);
 
@@ -52,6 +55,7 @@ public class GetGroupLinks {
             String message = e.getMessage();
             System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+            groupInfo.setStatus(GetGroupsStatus.FAILED);
             facebookBrowser.closeBrowser(user);
         }
 

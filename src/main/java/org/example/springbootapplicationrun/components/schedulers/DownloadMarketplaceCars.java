@@ -5,7 +5,9 @@ import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.UserClient;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
+import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.components.pages.MarketplacePage;
 import org.example.springbootapplicationrun.models.UserReport;
@@ -31,7 +33,10 @@ public class DownloadMarketplaceCars {
     @Autowired
     private UserUpdater userUpdater;
 
-    public void downloadCars(Integer userId) throws Exception {
+    public void downloadCars(Integer userId, Car car) throws Exception {
+
+
+        car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
         User user = userContainer.getFbUserByUserId(userId);
 
@@ -51,6 +56,8 @@ public class DownloadMarketplaceCars {
             String message = e.getMessage();
             System.out.println(message);
             userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+            car.setCarsStatus(GetCarsStatus.FAILED);
+
             return;
         }
 

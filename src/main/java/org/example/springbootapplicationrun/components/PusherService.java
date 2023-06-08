@@ -12,15 +12,18 @@ import jakarta.annotation.PostConstruct;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.schedulers.DownloadMarketplaceCars;
 import org.example.springbootapplicationrun.components.schedulers.DownloadScheduledPost;
+import org.example.springbootapplicationrun.components.schedulers.GetGroupLinks;
 import org.example.springbootapplicationrun.components.schedulers.SendSelectedPosts;
+import org.example.springbootapplicationrun.enums.GetCarsStatus;
+import org.example.springbootapplicationrun.enums.GetGroupsStatus;
+import org.example.springbootapplicationrun.enums.GetPostStatus;
+import org.example.springbootapplicationrun.models.Car;
+import org.example.springbootapplicationrun.models.GroupInfo;
 import org.example.springbootapplicationrun.models.Post;
-import org.example.springbootapplicationrun.models.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 
 @Component
@@ -32,6 +35,8 @@ public class PusherService {
     DownloadScheduledPost downloadScheduledPost;
     @Autowired
     SendSelectedPosts sendSelectedPosts;
+    @Autowired
+    GetGroupLinks getGroupLinks;
     @Autowired
     UserContainer userContainer;
 
@@ -66,16 +71,22 @@ public class PusherService {
                 JSONObject data = new JSONObject(event.getData());
                 JSONObject userData = data.getJSONObject("user");
                 JSONObject postData = data.getJSONObject("post");
-
-                userContainer.addUser(userData);
+                Integer postId = postData.getInt("postId");
+                Post post = new Post();
+                post.setPostId(postId);
                 try {
-                    downloadScheduledPost.downloadPost(postData);
+
+                    userContainer.addUser(userData);
+                    downloadScheduledPost.downloadPost(post);
+                    sendSelectedPosts.sendSelectedPosts();
+
                 } catch (Exception e) {
+                    String message = e.getMessage();
+                    System.out.println(message);
+                    post.setPusherStatus(GetPostStatus.FAILED);
                     throw new RuntimeException(e);
                 }
-                sendSelectedPosts.sendSelectedPosts();
-
-
+                post.setPusherStatus(GetPostStatus.FINISHED);
             }
         });
 
@@ -83,18 +94,46 @@ public class PusherService {
             @Override
             public void onEvent(PusherEvent event) {
 
+                Car car = new Car();
+
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
                 Integer userId = data.getInt("userId");
                 try {
-                    downloadMarketplaceCars.downloadCars(userId);
+                    downloadMarketplaceCars.downloadCars(userId, car);
+
                 } catch (Exception e) {
+                    String message = e.getMessage();
+                    System.out.println(message);
+                    car.setCarsStatus(GetCarsStatus.FAILED);
                     throw new RuntimeException(e);
                 }
+                car.setCarsStatus(GetCarsStatus.FINISHED);
+                String status = String.valueOf(car.getCarsStatus());
+                System.out.println(status);
 
             }
 
 
+        });
+
+        channel.bind("get-groups", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(PusherEvent event) {
+                System.out.println("Received event with data: " + event.toString());
+                JSONObject data = new JSONObject(event.getData());
+                Integer userId = data.getInt("userId");
+                GroupInfo groupInfo = new GroupInfo();
+                try {
+                    getGroupLinks.getLinks(userId, groupInfo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                groupInfo.setStatus(GetGroupsStatus.FINISHED);
+                String status = String.valueOf(groupInfo.getStatus());
+                System.out.println(status);
+
+            }
         });
 
         pusher.disconnect();

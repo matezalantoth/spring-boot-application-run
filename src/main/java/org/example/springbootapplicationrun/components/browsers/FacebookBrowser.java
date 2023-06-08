@@ -35,8 +35,6 @@ public class FacebookBrowser {
         if (drivers.containsKey(email)) {
             return drivers.get(email);
         }
-
-
         return createAndLogin(user);
 
     }

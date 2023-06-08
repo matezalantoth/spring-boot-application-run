@@ -2,6 +2,7 @@ package org.example.springbootapplicationrun.components.schedulers;
 
 import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.components.containers.PostContainer;
+import org.example.springbootapplicationrun.enums.GetPostStatus;
 import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.Post;
@@ -23,13 +24,16 @@ public class DownloadScheduledPost {
     @Autowired
     private PostContainer postContainer;
 
-    public void downloadPost(JSONObject postData) throws Exception {
+    @Autowired
+    private PostClient postClient;
 
-        Post poster = new Post();
+    public void downloadPost(Post poster) throws Exception {
 
+        JSONObject postData = postClient.getPost(poster.getPostId());
+
+        poster.setPusherStatus(GetPostStatus.IN_PROGRESS);
         poster.setScheduledTo(LocalDateTime.parse(postData.getString("scheduledTo"), DateTimeFormatter.ISO_DATE_TIME));
         poster.setFacebookGroupId(postData.getJSONObject("facebook_group").getBigInteger("groupId"));
-        poster.setPostId(postData.getInt("id"));
         poster.setUserId((postData.getInt("userId")));
         poster.setTitle(postData.getJSONObject("lead").getString("title"));
         poster.setDescription(postData.getJSONObject("lead").getString("description"));

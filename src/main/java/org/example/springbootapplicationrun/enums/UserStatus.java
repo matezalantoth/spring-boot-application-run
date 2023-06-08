@@ -1,5 +1,5 @@
 package org.example.springbootapplicationrun.enums;
 
 public enum UserStatus {
-    VALID, UNDER_REVIEW, INVALID
+    VALID, IN_USE, NOT_IN_USE, UNDER_REVIEW, INVALID
 }

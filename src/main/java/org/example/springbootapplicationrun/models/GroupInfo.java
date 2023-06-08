@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.models;
 
+import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.json.JSONObject;
 
 public class GroupInfo {
@@ -10,6 +11,16 @@ public class GroupInfo {
 
     String image;
 
+    GetGroupsStatus status;
+    public GroupInfo(){
+        status = GetGroupsStatus.INIT;
+    }
+    public void setStatus(GetGroupsStatus status) {
+        this.status = status;
+    }
+    public GetGroupsStatus getStatus() {
+        return status;
+    }
     public String getName() {
         return name;
     }

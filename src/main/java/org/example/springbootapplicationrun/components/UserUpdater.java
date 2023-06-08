@@ -24,13 +24,11 @@ public class UserUpdater {
         user.setStatus(status);
         user.setStatusChangedAt(time);
 
-
         UserReport userReport = new UserReport();
 
         userReport.setId(user.getId());
         userReport.setUserStatus(user.getStatus());
         userReport.setStatusChangedAt(user.getStatusChangedAt());
-
 
         JSONObject userStatus = userReport.getUserStatusJSON();
         userClient.sendUserInfoToServer(userStatus);

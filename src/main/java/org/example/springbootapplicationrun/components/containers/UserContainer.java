@@ -1,10 +1,10 @@
 package org.example.springbootapplicationrun.components.containers;
 
+import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.User;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -64,6 +64,19 @@ public class UserContainer {
         });
 
         return UnderReviewUsers;
+    }
+
+    public boolean canPost(User user){
+
+        UserStatus currentStatus = user.getStatus();
+        if (currentStatus == UserStatus.INVALID) {
+            return false;
+        }
+        if (currentStatus == UserStatus.IN_USE) {
+            return false;
+        }
+
+        return true;
     }
 
 
