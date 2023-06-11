@@ -9,6 +9,7 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 import jakarta.annotation.PostConstruct;
+import org.example.springbootapplicationrun.components.containers.QueueContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.schedulers.DownloadMarketplaceCars;
 import org.example.springbootapplicationrun.components.schedulers.DownloadScheduledPost;
@@ -18,8 +19,10 @@ import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.example.springbootapplicationrun.enums.GetPostStatus;
 import org.example.springbootapplicationrun.models.Car;
+import org.example.springbootapplicationrun.models.Data;
 import org.example.springbootapplicationrun.models.GroupInfo;
 import org.example.springbootapplicationrun.models.Post;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,13 +35,9 @@ public class PusherService {
     @Autowired
     DownloadMarketplaceCars downloadMarketplaceCars;
     @Autowired
-    DownloadScheduledPost downloadScheduledPost;
-    @Autowired
-    SendSelectedPosts sendSelectedPosts;
+    QueueContainer queueContainer;
     @Autowired
     GetGroupLinks getGroupLinks;
-    @Autowired
-    UserContainer userContainer;
 
     @Value("${pusher.api.key}")
     String apiKey;
@@ -49,6 +48,7 @@ public class PusherService {
         Pusher pusher = new Pusher(apiKey, pusherOptions);
 
         pusher.connect(new ConnectionEventListener() {
+
             @Override
             public void onConnectionStateChange(ConnectionStateChange change) {
                 System.out.println("State changed to " + change.getCurrentState() +
@@ -64,29 +64,16 @@ public class PusherService {
         Channel channel = pusher.subscribe("main");
 
         channel.bind("get-posts", new SubscriptionEventListener() {
+
+
             @Override
             public void onEvent(PusherEvent event) {
 
+                System.out.println("Received spring custom event - " + event.getData());
                 System.out.println("Received event with data: " + event.toString());
-                JSONObject data = new JSONObject(event.getData());
-                JSONObject userData = data.getJSONObject("user");
-                JSONObject postData = data.getJSONObject("post");
-                Integer postId = postData.getInt("postId");
-                Post post = new Post();
-                post.setPostId(postId);
-                try {
+                JSONObject jsonObject = new JSONObject(event.getData());
+                queueContainer.addPusherData(jsonObject);
 
-                    userContainer.addUser(userData);
-                    downloadScheduledPost.downloadPost(post);
-                    sendSelectedPosts.sendSelectedPosts();
-
-                } catch (Exception e) {
-                    String message = e.getMessage();
-                    System.out.println(message);
-                    post.setPusherStatus(GetPostStatus.FAILED);
-                    throw new RuntimeException(e);
-                }
-                post.setPusherStatus(GetPostStatus.FINISHED);
             }
         });
 
