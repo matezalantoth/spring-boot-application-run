@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.containers;
 
+import org.example.springbootapplicationrun.enums.DataStatus;
 import org.example.springbootapplicationrun.models.Data;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,6 +27,12 @@ public class QueueContainer {
         newData.setUser(userData);
         newData.setPost(postData);
         queueData.add(newData);
+        queueData.forEach(queueDataEntry->{
+            DataStatus currentStatus = queueDataEntry.getStatus();
+            if (currentStatus == DataStatus.PROCESSED){
+                queueData.remove(queueDataEntry);
+            }
+        });
 
     }
 

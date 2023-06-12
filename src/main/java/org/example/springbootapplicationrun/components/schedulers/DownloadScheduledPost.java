@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import org.example.springbootapplicationrun.components.PostUpdater;
 import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.components.containers.PostContainer;
 import org.example.springbootapplicationrun.enums.GetPostStatus;
@@ -20,12 +21,12 @@ import java.util.List;
 @Component
 public class DownloadScheduledPost {
 
-    //Temporary Solution For Testing
     @Autowired
     private PostContainer postContainer;
-
     @Autowired
     private PostClient postClient;
+    @Autowired
+    private PostUpdater postUpdater;
 
     public void downloadPost(Post poster) throws Exception {
 
@@ -62,8 +63,10 @@ public class DownloadScheduledPost {
         });
 
         poster.setImages(imageList);
-        poster.setStatus(PostStatus.DOWNLOADED);
+
+        postUpdater.updatePost(poster, PostStatus.DOWNLOADED);
         postContainer.addPost(poster);
+
 
 
 

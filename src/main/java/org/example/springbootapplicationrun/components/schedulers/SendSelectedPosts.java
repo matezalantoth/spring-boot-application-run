@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
 
+import org.example.springbootapplicationrun.components.PostUpdater;
 import org.example.springbootapplicationrun.components.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.containers.PostContainer;
@@ -39,8 +40,7 @@ public class SendSelectedPosts {
                 continue;
             }
             try {
-
-                post.setStatus(PostStatus.POSTING);
+                postUpdater.updatePost(post, PostStatus.POSTING);
                 User user = userContainer.getFbUserByUserId(post.getUserId());
 
                 if (!userContainer.canPost(user)){
@@ -68,7 +68,7 @@ public class SendSelectedPosts {
 
 
             } catch (Exception e) {
-                post.setStatus(PostStatus.FAILED);
+                postUpdater.updatePost(post, PostStatus.FAILED);
             }
 
         }

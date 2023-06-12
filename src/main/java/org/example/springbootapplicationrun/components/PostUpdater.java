@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components.schedulers;
+package org.example.springbootapplicationrun.components;
 
 import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.enums.PostStatus;
@@ -18,7 +18,7 @@ public class PostUpdater {
 
     public void updatePost(Post post, PostStatus postStatus){
 
-        LocalDateTime time = LocalDateTime.from(LocalTime.now());
+        LocalDateTime time = LocalDateTime.now();
 
         post.setStatus(postStatus);
         post.setStatusChangedAt(time);

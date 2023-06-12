@@ -34,7 +34,6 @@ public class Posting {
             DataStatus currentStatus = data.getStatus();
 
             if (currentStatus == DataStatus.PROCESSED){
-                newDataList.remove(data);
                 return;
             }
 
@@ -54,7 +53,7 @@ public class Posting {
                 String message = e.getMessage();
                 System.out.println(message);
                 post.setPusherStatus(GetPostStatus.FAILED);
-                throw new RuntimeException(e);
+                return;
             }
             post.setPusherStatus(GetPostStatus.FINISHED);
             data.setStatus(DataStatus.PROCESSED);
