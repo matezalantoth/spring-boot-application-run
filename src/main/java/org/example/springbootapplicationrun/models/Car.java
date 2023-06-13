@@ -11,10 +11,18 @@ public final class Car {
     private String price;
     private String link;
     private GetCarsStatus carsStatus;
+    private Integer userId;
 
     public Car(){
         carsStatus = GetCarsStatus.INIT;
 
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    public Integer getUserId() {
+        return userId;
     }
 
     public void setCarsStatus(GetCarsStatus carsStatus) {

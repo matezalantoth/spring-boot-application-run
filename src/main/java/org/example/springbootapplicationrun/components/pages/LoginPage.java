@@ -20,16 +20,16 @@ public class LoginPage {
         driver.get("https://www.facebook.com/login/");
 
         driver.findElement(By.xpath("//button[@data-cookiebanner='accept_button']")).click();
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         driver.findElement(By.xpath("//input[@id='email']")).sendKeys(email);
-        Thread.sleep(10000);
+        Thread.sleep(3000);
 
         driver.findElement(By.xpath("//input[@id='pass']")).sendKeys(password);
-        Thread.sleep(5000);
+        Thread.sleep(3000);
 
         driver.findElement(By.xpath("//button[@type='submit']")).click();
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
 
     }

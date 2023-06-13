@@ -1,6 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
-import org.example.springbootapplicationrun.components.PostUpdater;
+import org.example.springbootapplicationrun.components.updaters.PostUpdater;
 import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.components.containers.PostContainer;
 import org.example.springbootapplicationrun.enums.GetPostStatus;
@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

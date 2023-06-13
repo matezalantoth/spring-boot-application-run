@@ -9,20 +9,13 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 import jakarta.annotation.PostConstruct;
+import org.example.springbootapplicationrun.components.containers.CarUserContainer;
+import org.example.springbootapplicationrun.components.containers.GroupUserContainer;
 import org.example.springbootapplicationrun.components.containers.QueueContainer;
-import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.schedulers.DownloadMarketplaceCars;
-import org.example.springbootapplicationrun.components.schedulers.DownloadScheduledPost;
 import org.example.springbootapplicationrun.components.schedulers.GetGroupLinks;
-import org.example.springbootapplicationrun.components.schedulers.SendSelectedPosts;
-import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.GetGroupsStatus;
-import org.example.springbootapplicationrun.enums.GetPostStatus;
-import org.example.springbootapplicationrun.models.Car;
-import org.example.springbootapplicationrun.models.Data;
 import org.example.springbootapplicationrun.models.GroupInfo;
-import org.example.springbootapplicationrun.models.Post;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +31,10 @@ public class PusherService {
     QueueContainer queueContainer;
     @Autowired
     GetGroupLinks getGroupLinks;
+    @Autowired
+    CarUserContainer carUserContainer;
+    @Autowired
+    GroupUserContainer groupUserContainer;
 
     @Value("${pusher.api.key}")
     String apiKey;
@@ -81,27 +78,11 @@ public class PusherService {
             @Override
             public void onEvent(PusherEvent event) {
 
-                Car car = new Car();
-
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
-                Integer userId = data.getInt("userId");
-                try {
-                    downloadMarketplaceCars.downloadCars(userId, car);
-
-                } catch (Exception e) {
-                    String message = e.getMessage();
-                    System.out.println(message);
-                    car.setCarsStatus(GetCarsStatus.FAILED);
-                    throw new RuntimeException(e);
-                }
-                car.setCarsStatus(GetCarsStatus.FINISHED);
-                String status = String.valueOf(car.getCarsStatus());
-                System.out.println(status);
+                carUserContainer.addPusherData(data);
 
             }
-
-
         });
 
         channel.bind("get-groups", new SubscriptionEventListener() {
@@ -109,16 +90,7 @@ public class PusherService {
             public void onEvent(PusherEvent event) {
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
-                Integer userId = data.getInt("userId");
-                GroupInfo groupInfo = new GroupInfo();
-                try {
-                    getGroupLinks.getLinks(userId, groupInfo);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                groupInfo.setStatus(GetGroupsStatus.FINISHED);
-                String status = String.valueOf(groupInfo.getStatus());
-                System.out.println(status);
+                groupUserContainer.addPusherData(data);
 
             }
         });

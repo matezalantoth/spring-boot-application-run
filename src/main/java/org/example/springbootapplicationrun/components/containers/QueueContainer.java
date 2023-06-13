@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.components.containers;
 
 import org.example.springbootapplicationrun.enums.DataStatus;
+import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Data;
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,15 +1,16 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import org.example.springbootapplicationrun.components.clients.UserClient;
-import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.models.Car;
-import org.example.springbootapplicationrun.models.User;
-import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class MarketplacePage {
+
+    @Autowired
+    private CarServer carServer;
 
     WebDriver driver;
 
@@ -19,13 +20,12 @@ public class MarketplacePage {
 
     public JSONArray getCars() throws InterruptedException {
 
-        driver.get("https://www.facebook.com/marketplace/category/cars?sortBy=creation_time_descend&exact=false");
+        driver.get("https://www.facebook.com/marketplace/category/cars?sortBy=creation_time_descend&exact=true");
         Thread.sleep(2000);
-
-        scrollDown();
 
         JSONArray carsInfo = new JSONArray();
 
+        scrollDown();
 
         driver.findElements(By.xpath("//img")).forEach(image -> {
 
@@ -58,23 +58,17 @@ public class MarketplacePage {
             JSONObject jsonObject = car.getJSONInfo();
             carsInfo.put(jsonObject);
 
-
         });
         return carsInfo;
     }
 
-
     private void scrollDown() throws InterruptedException {
 
         for (int i = 1; i <= 50; i++) {
-
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollBy(0, 10000)", "");
             Thread.sleep(2000);
-            System.out.println(i);
-
         }
-
-
     }
+
 }

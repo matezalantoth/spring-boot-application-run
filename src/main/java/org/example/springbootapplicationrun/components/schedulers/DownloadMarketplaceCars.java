@@ -1,25 +1,23 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
-import org.example.springbootapplicationrun.components.UserUpdater;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
-import org.example.springbootapplicationrun.components.clients.UserClient;
+import org.example.springbootapplicationrun.components.containers.CarUserContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.components.pages.MarketplacePage;
-import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 @Component
 public class DownloadMarketplaceCars {
@@ -32,41 +30,49 @@ public class DownloadMarketplaceCars {
     private CarServer carServer;
     @Autowired
     private UserUpdater userUpdater;
+    @Autowired
+    private CarUserContainer carUserContainer;
 
-    public void downloadCars(Integer userId, Car car) throws Exception {
+    @Scheduled(fixedRate = 300_000, initialDelay = 15_000)
+    public void downloadCars() throws Exception {
+        Car car = new Car();
 
+        List<User> users = carUserContainer.getQueue();
+        users.forEach(user -> {
+            try {
 
-        car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
+                car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
-        User user = userContainer.getFbUserByUserId(userId);
+                Integer userId = user.getId();
 
-        WebDriver driver = facebookBrowser.getBrowser(user);
+                User trueUser = userContainer.getFbUserByUserId(userId);
 
-        UserStatus currentStatus = user.getStatus();
-        if (currentStatus == UserStatus.INVALID) {
-            return;
-        }
-        try {
+                WebDriver driver = facebookBrowser.getBrowser(trueUser);
 
-            MarketplacePage marketplacePage = new MarketplacePage(driver);
-            JSONArray cars = marketplacePage.getCars();
-            carServer.sendCarsToServer(cars);
+                UserStatus currentStatus = user.getStatus();
+                if (currentStatus == UserStatus.INVALID) {
+                    return;
+                }
 
-        } catch (Exception e) {
-            String message = e.getMessage();
-            System.out.println(message);
-            userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
-            car.setCarsStatus(GetCarsStatus.FAILED);
-
-            return;
-        }
-
-        String time = String.valueOf(Instant.now().getEpochSecond());
-        System.out.println(time);
-
-        driver.get("https://www.facebook.com");
-        Thread.sleep(2000);
+                MarketplacePage marketplacePage = new MarketplacePage(driver);
+                JSONArray carsInfo = marketplacePage.getCars();
+                carServer.sendCarsToServer(carsInfo);
 
 
+                String time = String.valueOf(Instant.now().getEpochSecond());
+                System.out.println(time);
+
+                driver.get("https://www.facebook.com");
+                Thread.sleep(2000);
+
+            } catch (Exception e) {
+                String message = e.getMessage();
+                System.out.println(message);
+                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+                car.setCarsStatus(GetCarsStatus.FAILED);
+            }
+        });
     }
 }
+
+

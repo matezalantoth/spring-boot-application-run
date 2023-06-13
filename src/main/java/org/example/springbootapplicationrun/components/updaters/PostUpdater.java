@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.updaters;
 
 import org.example.springbootapplicationrun.components.clients.PostClient;
 import org.example.springbootapplicationrun.enums.PostStatus;

@@ -1,4 +1,4 @@
-package org.example.springbootapplicationrun.components;
+package org.example.springbootapplicationrun.components.updaters;
 
 import org.example.springbootapplicationrun.components.clients.UserClient;
 import org.example.springbootapplicationrun.enums.UserStatus;

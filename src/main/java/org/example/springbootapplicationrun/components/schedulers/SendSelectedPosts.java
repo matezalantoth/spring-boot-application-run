@@ -1,8 +1,8 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
 
-import org.example.springbootapplicationrun.components.PostUpdater;
-import org.example.springbootapplicationrun.components.UserUpdater;
+import org.example.springbootapplicationrun.components.updaters.PostUpdater;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.containers.PostContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;

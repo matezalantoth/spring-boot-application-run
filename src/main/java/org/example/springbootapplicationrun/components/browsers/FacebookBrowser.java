@@ -1,12 +1,9 @@
 package org.example.springbootapplicationrun.components.browsers;
 
-import org.example.springbootapplicationrun.components.UserUpdater;
-import org.example.springbootapplicationrun.components.clients.UserClient;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.pages.LoginPage;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.User;
-import org.example.springbootapplicationrun.models.UserReport;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
