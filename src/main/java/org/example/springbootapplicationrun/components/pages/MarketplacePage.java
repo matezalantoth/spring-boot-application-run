@@ -20,7 +20,7 @@ public class MarketplacePage {
 
     public JSONArray getCars() throws InterruptedException {
 
-        driver.get("https://www.facebook.com/marketplace/category/cars?sortBy=creation_time_descend&exact=true");
+        driver.get("https://www.facebook.com/marketplace/category/vehicles?sortBy=creation_time_descend&exact=true");
         Thread.sleep(2000);
 
         JSONArray carsInfo = new JSONArray();
