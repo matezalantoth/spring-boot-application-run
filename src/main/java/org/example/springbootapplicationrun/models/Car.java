@@ -1,5 +1,7 @@
 package org.example.springbootapplicationrun.models;
 
+import org.example.springbootapplicationrun.enums.GetCarsStatus;
+import org.example.springbootapplicationrun.enums.PostStatus;
 import org.json.JSONObject;
 
 public final class Car {
@@ -8,6 +10,27 @@ public final class Car {
     private String distance;
     private String price;
     private String link;
+    private GetCarsStatus carsStatus;
+    private Integer userId;
+
+    public Car(){
+        carsStatus = GetCarsStatus.INIT;
+
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setCarsStatus(GetCarsStatus carsStatus) {
+        this.carsStatus = carsStatus;
+    }
+    public GetCarsStatus getCarsStatus() {
+        return carsStatus;
+    }
 
     public void setTitle(String title) {
 

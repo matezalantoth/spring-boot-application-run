@@ -1,13 +1,10 @@
 package org.example.springbootapplicationrun.components.containers;
 
-import org.example.springbootapplicationrun.components.clients.EncryptedClient;
 import org.example.springbootapplicationrun.enums.UserStatus;
-import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,8 +12,6 @@ import java.util.List;
 @Component
 public class UserContainer {
 
-    @Autowired
-    private EncryptedClient encryptedClient;
     private LinkedHashMap<Integer, User> fbUsers;
 
 
@@ -40,21 +35,24 @@ public class UserContainer {
 
     }
 
-
-    public User getFbUserByUserId(Integer userId) throws IOException {
+    public void addUser(JSONObject userData){
+        Integer userId = userData.getInt("userId");
         User user = fbUsers.get(userId);
-        if (user != null) {
-            return user;
+        if (user != null){
+            return;
         }
-        User newUser = buildUser(userId);
+        User newUser = new User();
+        newUser.setEmail(userData.getString("email"));
+        newUser.setPassword(userData.getString("password"));
+        newUser.setId(userId);
         fbUsers.put(newUser.getId(), newUser);
-        return newUser;
     }
 
-    protected User buildUser(Integer userId) throws IOException {
-        User user = encryptedClient.getFbUser(userId);
-        return user;
+
+    public User getFbUserByUserId(Integer userId){
+        return fbUsers.get(userId);
     }
+
 
     public List<User> getUnderReviewUsers() {
         List<User> UnderReviewUsers = new ArrayList<>();
@@ -67,6 +65,21 @@ public class UserContainer {
 
         return UnderReviewUsers;
     }
+
+    public boolean canPost(User user){
+
+        UserStatus currentStatus = user.getStatus();
+        if (currentStatus == UserStatus.INVALID) {
+            return false;
+        }
+        if (currentStatus == UserStatus.IN_USE) {
+            return false;
+        }
+
+        return true;
+    }
+
+
 
 
 }

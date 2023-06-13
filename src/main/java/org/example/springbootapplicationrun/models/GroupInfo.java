@@ -1,6 +1,9 @@
 package org.example.springbootapplicationrun.models;
 
+import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.json.JSONObject;
+
+import java.time.LocalDateTime;
 
 public class GroupInfo {
 
@@ -10,6 +13,26 @@ public class GroupInfo {
 
     String image;
 
+    GetGroupsStatus status;
+    LocalDateTime statusChangedAt;
+
+    public GroupInfo(){
+        status = GetGroupsStatus.INIT;
+    }
+    public void setStatus(GetGroupsStatus status) {
+
+        this.status = status;
+    }
+    public void setStatusChangedAt(LocalDateTime statusChangedAt) {
+
+        this.statusChangedAt = statusChangedAt;
+    }
+    public LocalDateTime getStatusChangedAt(){
+        return statusChangedAt;
+    }
+    public GetGroupsStatus getStatus() {
+        return status;
+    }
     public String getName() {
         return name;
     }

@@ -50,7 +50,7 @@ public class PostContainer {
     public List<Post> getPosts() {
         List<Post> selectedPosts = new ArrayList<>();
         posts.forEach((postId, post) -> {
-            if (post.isScheduled()) {
+            if (post.isDownloaded()) {
 
                 selectedPosts.add(post);
             }

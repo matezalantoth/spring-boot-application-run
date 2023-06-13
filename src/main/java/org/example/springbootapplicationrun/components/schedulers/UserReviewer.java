@@ -1,7 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
-import org.checkerframework.checker.units.qual.A;
-import org.example.springbootapplicationrun.components.UserUpdater;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.enums.UserStatus;
@@ -9,7 +8,6 @@ import org.example.springbootapplicationrun.models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,7 +22,7 @@ public class UserReviewer {
     @Autowired
     private UserUpdater userUpdater;
 
-    @Scheduled(fixedRate = 60_000)
+//    @Scheduled(fixedRate = 60_000)
     public void reviewUsers() {
 
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();

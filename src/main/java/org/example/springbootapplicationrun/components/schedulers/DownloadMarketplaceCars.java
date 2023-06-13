@@ -1,23 +1,23 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
-import org.example.springbootapplicationrun.components.UserUpdater;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
-import org.example.springbootapplicationrun.components.clients.UserClient;
+import org.example.springbootapplicationrun.components.containers.CarUserContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
+import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.User;
 import org.example.springbootapplicationrun.components.pages.MarketplacePage;
-import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 @Component
 public class DownloadMarketplaceCars {
@@ -30,38 +30,49 @@ public class DownloadMarketplaceCars {
     private CarServer carServer;
     @Autowired
     private UserUpdater userUpdater;
+    @Autowired
+    private CarUserContainer carUserContainer;
 
-
-    @Scheduled(fixedRate = 3_600_000)
+    @Scheduled(fixedRate = 300_000, initialDelay = 15_000)
     public void downloadCars() throws Exception {
+        Car car = new Car();
 
-        User user = userContainer.getFbUserByUserId(3);
+        List<User> users = carUserContainer.getQueue();
+        users.forEach(user -> {
+            try {
 
-        WebDriver driver = facebookBrowser.getBrowser(user);
+                car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
-        UserStatus currentStatus = user.getStatus();
-        if (currentStatus == UserStatus.INVALID) {
-            return;
-        }
-        try {
+                Integer userId = user.getId();
 
-            MarketplacePage marketplacePage = new MarketplacePage(driver);
-            JSONArray cars = marketplacePage.getCars();
-            carServer.sendCarsToServer(cars);
+                User trueUser = userContainer.getFbUserByUserId(userId);
 
-        } catch (Exception e) {
-            String message = e.getMessage();
-            System.out.println(message);
-            userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
-            return;
-        }
+                WebDriver driver = facebookBrowser.getBrowser(trueUser);
 
-        String time = String.valueOf(Instant.now().getEpochSecond());
-        System.out.println(time);
+                UserStatus currentStatus = user.getStatus();
+                if (currentStatus == UserStatus.INVALID) {
+                    return;
+                }
 
-        driver.get("https://www.facebook.com");
-        Thread.sleep(2000);
+                MarketplacePage marketplacePage = new MarketplacePage(driver);
+                JSONArray carsInfo = marketplacePage.getCars();
+                carServer.sendCarsToServer(carsInfo);
 
 
+                String time = String.valueOf(Instant.now().getEpochSecond());
+                System.out.println(time);
+
+                driver.get("https://www.facebook.com");
+                Thread.sleep(2000);
+
+            } catch (Exception e) {
+                String message = e.getMessage();
+                System.out.println(message);
+                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+                car.setCarsStatus(GetCarsStatus.FAILED);
+            }
+        });
     }
 }
+
+

@@ -48,7 +48,7 @@ public class Image {
             Thread.sleep(2000);
             String time = String.valueOf(Instant.now().getEpochSecond());
 
-            final String path = "images/" + postId;
+            final String path = "/home/matezalantoth/Downloads/" + postId;
 
             File directory = new File(path);
             if (!directory.exists()) {
