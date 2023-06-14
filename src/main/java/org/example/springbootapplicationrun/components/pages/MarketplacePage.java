@@ -67,7 +67,7 @@ public class MarketplacePage {
         for (int i = 1; i <= 50; i++) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollBy(0, 10000)", "");
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         }
     }
 
