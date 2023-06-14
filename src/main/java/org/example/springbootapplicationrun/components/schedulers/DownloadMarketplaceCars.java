@@ -40,7 +40,6 @@ public class DownloadMarketplaceCars {
         List<User> users = carUserContainer.getQueue();
         users.forEach(user -> {
             try {
-
                 car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
                 Integer userId = user.getId();
@@ -68,11 +67,11 @@ public class DownloadMarketplaceCars {
             } catch (Exception e) {
                 String message = e.getMessage();
                 System.out.println(message);
-//                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
-//                car.setCarsStatus(GetCarsStatus.FAILED);
             }
         });
     }
 }
 
+//                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+//                car.setCarsStatus(GetCarsStatus.FAILED);
 
