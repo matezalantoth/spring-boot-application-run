@@ -20,7 +20,7 @@ public class MarketplacePage {
 
     public JSONArray getCars() throws InterruptedException {
 
-        driver.get("https://www.facebook.com/marketplace/category/vehicles?sortBy=creation_time_descend&exact=true");
+        driver.get("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
         Thread.sleep(2000);
 
         JSONArray carsInfo = new JSONArray();
@@ -78,7 +78,7 @@ public class MarketplacePage {
 
     private void scrollDown() throws InterruptedException {
 
-        for (int i = 1; i <= 50; i++) {
+        for (int i = 1; i <= 10; i++) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.scrollBy(0, 10000)", "");
             Thread.sleep(3000);

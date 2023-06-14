@@ -32,6 +32,11 @@ public class UserContainer {
         user3.setEmail("stopmotionformeandyt@gmail.com");
         user3.setPassword("Mate'sApple190");
         fbUsers.put(user3.getId(), user3);
+        User user4 = new User();
+        user4.setId(4);
+        user4.setEmail("mztbusinessenquiries@gmail.com");
+        user4.setPassword("Mate'sPC190");
+        fbUsers.put(user4.getId(), user4);
 
     }
 
