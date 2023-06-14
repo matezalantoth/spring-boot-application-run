@@ -33,7 +33,7 @@ public class DownloadMarketplaceCars {
     @Autowired
     private CarUserContainer carUserContainer;
 
-    @Scheduled(fixedRate = 320_000, initialDelay = 15_000)
+    @Scheduled(fixedRate = 100_000, initialDelay = 15_000)
     public void downloadCars() throws Exception {
         Car car = new Car();
 
