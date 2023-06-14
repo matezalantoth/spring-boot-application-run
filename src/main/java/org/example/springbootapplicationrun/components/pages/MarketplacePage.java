@@ -18,9 +18,9 @@ public class MarketplacePage {
         this.driver = driver;
     }
 
-    public JSONArray getCars() throws InterruptedException {
+    public JSONArray getCars(String facebookLink) throws InterruptedException {
 
-        driver.get("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
+        driver.get(facebookLink);
         Thread.sleep(2000);
 
         JSONArray carsInfo = new JSONArray();
