@@ -8,6 +8,7 @@ import org.example.springbootapplicationrun.models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,14 +23,14 @@ public class UserReviewer {
     @Autowired
     private UserUpdater userUpdater;
 
-//    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 60_000)
     public void reviewUsers() {
 
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();
         underReviewUsers.forEach(user -> {
             LocalDateTime changedAt = user.getStatusChangedAt();
 
-            if (changedAt.plusMinutes(30).isBefore(LocalDateTime.now())) {
+            if (changedAt.plusMinutes(10).isBefore(LocalDateTime.now())) {
                 return;
             }
 
