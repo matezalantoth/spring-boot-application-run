@@ -1,16 +1,15 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
-import kotlinx.html.A;
-import org.example.springbootapplicationrun.components.updaters.UserUpdater;
-import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
+import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.containers.CarUserContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
+import org.example.springbootapplicationrun.components.pages.MarketplacePage;
+import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.User;
-import org.example.springbootapplicationrun.components.pages.MarketplacePage;
 import org.json.JSONArray;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
