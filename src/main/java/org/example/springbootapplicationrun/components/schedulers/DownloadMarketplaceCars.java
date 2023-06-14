@@ -68,8 +68,8 @@ public class DownloadMarketplaceCars {
             } catch (Exception e) {
                 String message = e.getMessage();
                 System.out.println(message);
-                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
-                car.setCarsStatus(GetCarsStatus.FAILED);
+//                userUpdater.updateStatus(user, UserStatus.UNDER_REVIEW);
+//                car.setCarsStatus(GetCarsStatus.FAILED);
             }
         });
     }
