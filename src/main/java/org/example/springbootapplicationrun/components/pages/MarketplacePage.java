@@ -43,8 +43,16 @@ public class MarketplacePage {
                 System.out.println(link.getAttribute("href"));
 
 
-                WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
-                System.out.println(distance.getText());
+                String distanceText = null;
+                try {
+                    WebElement distance = link.findElement(By.xpath("./div/div/following-sibling::div/div/div/span/span"));
+                    distanceText = distance.getText();
+                    System.out.println(distanceText);
+                } catch (Exception e) {
+                    String message = e.getMessage();
+                    System.out.println(message);
+
+                }
 
                 WebElement price = link.findElement(By.xpath("./div/div/following-sibling::div/div/span/div/span"));
                 System.out.println(price.getText());
@@ -55,7 +63,7 @@ public class MarketplacePage {
                 car.setImage(image.getAttribute("src"));
                 car.setLink(link.getAttribute("href"));
                 car.setPrice(price.getText());
-                car.setDistance(distance.getText());
+                car.setDistance(distanceText);
 
                 JSONObject jsonObject = car.getJSONInfo();
                 carsInfo.put(jsonObject);
