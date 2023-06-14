@@ -9,6 +9,7 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 import jakarta.annotation.PostConstruct;
+import org.example.springbootapplicationrun.components.containers.CarIdsContainer;
 import org.example.springbootapplicationrun.components.containers.CarUserContainer;
 import org.example.springbootapplicationrun.components.containers.GroupUserContainer;
 import org.example.springbootapplicationrun.components.containers.QueueContainer;
@@ -16,6 +17,7 @@ import org.example.springbootapplicationrun.components.schedulers.DownloadMarket
 import org.example.springbootapplicationrun.components.schedulers.GetGroupLinks;
 import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.example.springbootapplicationrun.models.GroupInfo;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +37,8 @@ public class PusherService {
     CarUserContainer carUserContainer;
     @Autowired
     GroupUserContainer groupUserContainer;
+    @Autowired
+    CarIdsContainer carIdsContainer;
 
     @Value("${pusher.api.key}")
     String apiKey;
@@ -81,6 +85,16 @@ public class PusherService {
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
                 carUserContainer.addPusherData(data);
+
+            }
+        });
+
+        channel.bind("get-datePosted", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(PusherEvent event) {
+                System.out.println("Received event with data: " + event.toString());
+                JSONObject data = new JSONObject(event.getData());
+                carIdsContainer.addPusherData(data);
 
             }
         });
