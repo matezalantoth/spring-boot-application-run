@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.schedulers;
 
+import kotlinx.html.A;
 import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -37,38 +39,49 @@ public class DownloadMarketplaceCars {
     public void downloadCars() throws Exception {
         Car car = new Car();
 
+        ArrayList<String> links = new ArrayList<>();
+        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
+        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=1000000&maxPrice=2000000&sortBy=creation_time_descend&exact=false");
+        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=2000000&maxPrice=3000000&sortBy=creation_time_descend&exact=false");
+        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=3000000&maxPrice=4000000&sortBy=creation_time_descend&exact=false");
         List<User> users = carUserContainer.getQueue();
-        users.forEach(user -> {
-            try {
-                car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
+        links.forEach(link -> {
 
-                Integer userId = user.getId();
+            users.forEach(user -> {
+                try {
+                    car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
-                User trueUser = userContainer.getFbUserByUserId(userId);
+                    Integer userId = user.getId();
 
-                WebDriver driver = facebookBrowser.getBrowser(trueUser);
+                    User trueUser = userContainer.getFbUserByUserId(userId);
 
-                UserStatus currentStatus = user.getStatus();
-                if (currentStatus == UserStatus.INVALID) {
-                    return;
+                    WebDriver driver = facebookBrowser.getBrowser(trueUser);
+
+                    UserStatus currentStatus = user.getStatus();
+                    if (currentStatus == UserStatus.INVALID) {
+                        return;
+                    }
+
+                    MarketplacePage marketplacePage = new MarketplacePage(driver);
+                    JSONArray carsInfo = marketplacePage.getCars(link);
+                    carServer.sendCarsToServer(carsInfo);
+
+
+                    String time = String.valueOf(Instant.now().getEpochSecond());
+                    System.out.println(time);
+
+                    driver.get("https://www.facebook.com");
+                    Thread.sleep(2000);
+
+                } catch (Exception e) {
+                    String message = e.getMessage();
+                    System.out.println(message);
                 }
+            });
 
-                MarketplacePage marketplacePage = new MarketplacePage(driver);
-                JSONArray carsInfo = marketplacePage.getCars();
-                carServer.sendCarsToServer(carsInfo);
-
-
-                String time = String.valueOf(Instant.now().getEpochSecond());
-                System.out.println(time);
-
-                driver.get("https://www.facebook.com");
-                Thread.sleep(2000);
-
-            } catch (Exception e) {
-                String message = e.getMessage();
-                System.out.println(message);
-            }
         });
+
+
     }
 }
 
