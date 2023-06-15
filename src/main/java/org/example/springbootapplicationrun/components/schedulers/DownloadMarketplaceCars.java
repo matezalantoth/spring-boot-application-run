@@ -11,7 +11,6 @@ import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.User;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
