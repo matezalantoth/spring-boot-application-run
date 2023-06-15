@@ -7,6 +7,12 @@ import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MarketplacePage {
 
     @Autowired
@@ -18,12 +24,12 @@ public class MarketplacePage {
         this.driver = driver;
     }
 
-    public JSONArray getCars(String facebookLink) throws InterruptedException {
+    public List<Car> getCars(String facebookLink) throws InterruptedException {
 
         driver.get(facebookLink);
         Thread.sleep(2000);
 
-        JSONArray carsInfo = new JSONArray();
+        List<Car> carsInfo = new ArrayList<>();
 
         scrollDown();
 
@@ -64,9 +70,10 @@ public class MarketplacePage {
                 car.setLink(link.getAttribute("href"));
                 car.setPrice(price.getText());
                 car.setDistance(distanceText);
+                BigInteger marketplaceId = regexMarketplaceId(car);
+                car.setMarketplaceId(marketplaceId);
 
-                JSONObject jsonObject = car.getJSONInfo();
-                carsInfo.put(jsonObject);
+                carsInfo.add(car);
 
             } catch (Exception e) {
                 String message = e.getMessage();
@@ -83,6 +90,18 @@ public class MarketplacePage {
             js.executeScript("window.scrollBy(0, 10000)", "");
             Thread.sleep(3000);
         }
+    }
+
+    private BigInteger regexMarketplaceId(Car car) throws Exception {
+        Pattern pattern = Pattern.compile("/item/([0-9]+)/");
+        Matcher matcher = pattern.matcher(car.getLink());
+
+        if (!matcher.find()) {
+            throw new Exception("No Marketplace ID was found!!");
+        }
+        String marketplaceId = matcher.group(1);
+
+        return new BigInteger(marketplaceId);
     }
 
 }

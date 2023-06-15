@@ -9,13 +9,15 @@ import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.enums.GetCarsStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
+import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.User;
-import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class DownloadMarketplaceCars {
     private UserUpdater userUpdater;
     @Autowired
     private CarUserContainer carUserContainer;
+
 
     @Scheduled(fixedRate = 100_000, initialDelay = 15_000)
     public void downloadCars() throws Exception {
@@ -62,9 +65,24 @@ public class DownloadMarketplaceCars {
                     }
 
                     MarketplacePage marketplacePage = new MarketplacePage(driver);
-                    JSONArray carsInfo = marketplacePage.getCars(link);
+                    List<Car> carsInfo = marketplacePage.getCars(link);
                     carServer.sendCarsToServer(carsInfo);
+                    carsInfo.forEach(finalCar -> {
 
+                        String url = finalCar.getImage();
+                        Image image = new Image();
+                        image.setUrl(url);
+
+                        try {
+
+                            String imageAsString = image.getImageContent();
+                            finalCar.setImageContent(imageAsString);
+                            carServer.updateCar(finalCar);
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
 
                     String time = String.valueOf(Instant.now().getEpochSecond());
                     System.out.println(time);

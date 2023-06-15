@@ -1,5 +1,6 @@
 package org.example.springbootapplicationrun.components.clients;
 
+import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Token;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class CarServer {
@@ -22,7 +24,13 @@ public class CarServer {
 
     //account email: cars-client@thesoftwareadvisor.co.uk
 //account password: carsMATE2023!
-    public void sendCarsToServer(JSONArray carsJSON) {
+    public void sendCarsToServer(List<Car> carsInfo) {
+
+        JSONArray carsFinal = new JSONArray();
+        carsInfo.forEach(newCar -> {
+            JSONObject carFinal = newCar.getJSONInfo();
+            carsFinal.put(carFinal);
+        });
 
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://cars-api.thesoftwareadvisor.co.uk")
@@ -35,7 +43,35 @@ public class CarServer {
                     httpHeaders.set("Authorization", "Bearer " + getToken().getAuthenticationToken());
                     httpHeaders.set("Content-Type", "application/json");
                 })
-                .body(BodyInserters.fromValue(carsJSON.toString()))
+                .body(BodyInserters.fromValue(carsFinal.toString()))
+                .retrieve()
+                .bodyToMono(String.class);
+        response.block();
+        response.subscribe(e -> {
+            System.out.println("------------------------------RESPONSE----------------------------------");
+            System.out.println(e);
+            System.out.println("------------------------------END----------------------------------");
+
+        });
+
+    }
+
+    public void updateCar(Car car){
+
+        JSONObject carInfo = car.getJSONInfo();
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://cars-api.thesoftwareadvisor.co.uk")
+                .build();
+
+
+        Mono<String> response = webClient.post()
+                .uri("/api/cars/" + car.getMarketplaceId())
+                .headers(httpHeaders -> {
+                    httpHeaders.set("Authorization", "Bearer " + getToken().getAuthenticationToken());
+                    httpHeaders.set("Content-Type", "application/json");
+                })
+                .body(BodyInserters.fromValue(carInfo.toString()))
                 .retrieve()
                 .bodyToMono(String.class);
         response.block();

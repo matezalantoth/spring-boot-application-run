@@ -15,9 +15,6 @@ import org.example.springbootapplicationrun.components.containers.GroupUserConta
 import org.example.springbootapplicationrun.components.containers.QueueContainer;
 import org.example.springbootapplicationrun.components.schedulers.DownloadMarketplaceCars;
 import org.example.springbootapplicationrun.components.schedulers.GetGroupLinks;
-import org.example.springbootapplicationrun.enums.GetGroupsStatus;
-import org.example.springbootapplicationrun.models.GroupInfo;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

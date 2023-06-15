@@ -1,18 +1,16 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import org.example.springbootapplicationrun.models.FinishedCar;
-import org.example.springbootapplicationrun.models.Post;
+import org.example.springbootapplicationrun.models.Car;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.math.BigInteger;
 
 public class GetCarPostedAtPage {
 
-    public void getTimePostedAt(WebDriver driver, FinishedCar car) throws InterruptedException {
+    public void getTimePostedAt(WebDriver driver, Car car) throws InterruptedException {
 
-        BigInteger carId = car.getCarId();
+        BigInteger carId = car.getMarketplaceId();
         System.out.println(carId);
         System.out.println("https://www.facebook.com/marketplace/item/" + carId + "/");
 

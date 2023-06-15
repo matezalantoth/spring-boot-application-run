@@ -64,6 +64,15 @@ public class Image {
 
     }
 
+    public String getImageContent() throws IOException {
+
+        URL webUrl = new URL(url);
+        BufferedImage newImage = ImageIO.read(webUrl);
+        String finalImage = String.valueOf(newImage);
+
+        return finalImage;
+    }
+
 }
 
 
