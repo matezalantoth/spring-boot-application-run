@@ -77,6 +77,7 @@ public class DownloadMarketplaceCars {
 
                             String imageAsString = image.getImageContent();
                             finalCar.setImageContent(imageAsString);
+
                             carServer.updateCar(finalCar);
 
                         } catch (IOException e) {

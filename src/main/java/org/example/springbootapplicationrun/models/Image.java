@@ -1,13 +1,17 @@
 package org.example.springbootapplicationrun.models;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.Instant;
+
+import static org.apache.commons.io.IOUtils.toByteArray;
 
 public class Image {
 
@@ -66,11 +70,17 @@ public class Image {
 
     public String getImageContent() throws IOException {
 
-        URL webUrl = new URL(url);
-        BufferedImage newImage = ImageIO.read(webUrl);
-        String finalImage = String.valueOf(newImage);
 
-        return finalImage;
+        String imageDataString = getBase64EncodedImage();
+        return imageDataString;
+
+    }
+
+    public String getBase64EncodedImage() throws IOException {
+        URL webUrl = new URL(url);
+        InputStream is = webUrl.openStream();
+        byte[] bytes = toByteArray(is);
+        return Base64.encodeBase64String(bytes);
     }
 
 }
