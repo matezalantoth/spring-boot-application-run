@@ -70,6 +70,7 @@ public class MarketplacePage {
                 car.setLink(link.getAttribute("href"));
                 car.setPrice(price.getText());
                 car.setDistance(distanceText);
+
                 BigInteger marketplaceId = regexMarketplaceId(car);
                 car.setMarketplaceId(marketplaceId);
 
