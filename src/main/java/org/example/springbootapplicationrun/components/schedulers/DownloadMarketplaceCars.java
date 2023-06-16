@@ -3,10 +3,12 @@ package org.example.springbootapplicationrun.components.schedulers;
 import org.example.springbootapplicationrun.components.browsers.FacebookBrowser;
 import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.containers.CarUserContainer;
+import org.example.springbootapplicationrun.components.containers.ImageContainer;
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.pages.MarketplacePage;
 import org.example.springbootapplicationrun.components.updaters.UserUpdater;
 import org.example.springbootapplicationrun.enums.GetCarsStatus;
+import org.example.springbootapplicationrun.enums.ImageStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Image;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class DownloadMarketplaceCars {
     private UserUpdater userUpdater;
     @Autowired
     private CarUserContainer carUserContainer;
+    @Autowired
+    private ImageContainer imageContainer;
 
 
     @Scheduled(fixedRate = 600_000, initialDelay = 15_000)
@@ -69,14 +72,20 @@ public class DownloadMarketplaceCars {
                     carsInfo.forEach(finalCar -> {
 
                         String url = finalCar.getImage();
-                        Image image = new Image();
-                        image.setUrl(url);
 
+                        Image image = imageContainer.getImageByURL(url);
                         try {
+
+                            ImageStatus currentImageStatus = image.getStatus();
+                            if (currentImageStatus == ImageStatus.DOWNLOADED){
+                                return;
+                            }
 
                             String imageAsString = image.getImageContent();
                             finalCar.setImageContent(imageAsString);
 
+
+                            imageContainer.addImage(image);
                             carServer.updateCar(finalCar);
                             Thread.sleep(1000);
 
