@@ -3,9 +3,10 @@ package org.example.springbootapplicationrun.components.containers;
 import org.example.springbootapplicationrun.enums.ImageStatus;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.User;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
-
+@Component
 public class ImageContainer {
 
     private LinkedHashMap<String, Image> images;
