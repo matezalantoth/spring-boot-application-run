@@ -36,7 +36,7 @@ public class DownloadMarketplaceCars {
     private CarUserContainer carUserContainer;
 
 
-    @Scheduled(fixedRate = 100_000, initialDelay = 15_000)
+    @Scheduled(fixedRate = 600_000, initialDelay = 15_000)
     public void downloadCars() throws Exception {
         Car car = new Car();
 
@@ -78,8 +78,9 @@ public class DownloadMarketplaceCars {
                             finalCar.setImageContent(imageAsString);
 
                             carServer.updateCar(finalCar);
+                            Thread.sleep(1000);
 
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                     });
