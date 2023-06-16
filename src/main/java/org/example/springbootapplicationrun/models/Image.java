@@ -1,6 +1,7 @@
 package org.example.springbootapplicationrun.models;
 
 import org.apache.commons.codec.binary.Base64;
+import org.example.springbootapplicationrun.enums.ImageStatus;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,11 @@ public class Image {
     private String url;
     private String localLink;
     private Integer postId;
+    private ImageStatus status;
+
+    public Image(){
+        status = ImageStatus.NOT_DOWNLOADED;
+    }
 
     public Integer getPostId() {
         return postId;
@@ -32,6 +38,9 @@ public class Image {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+    public String getUrl(){
+        return url;
     }
 
     public void setLocalLink(String localLink) {
@@ -70,8 +79,7 @@ public class Image {
 
     public String getImageContent() throws IOException {
 
-
-        String imageDataString = getBase64EncodedImage();
+         String imageDataString = "data:image/png;base64," + getBase64EncodedImage() ;
         return imageDataString;
 
     }
@@ -83,6 +91,13 @@ public class Image {
         return Base64.encodeBase64String(bytes);
     }
 
+    public ImageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ImageStatus status) {
+        this.status = status;
+    }
 }
 
 
