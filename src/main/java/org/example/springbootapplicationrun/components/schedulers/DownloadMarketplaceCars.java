@@ -81,6 +81,8 @@ public class DownloadMarketplaceCars {
                             Thread.sleep(1000);
 
                         } catch (Exception e) {
+                            String message = e.getMessage();
+                            System.out.println(message);
                             throw new RuntimeException(e);
                         }
                     });
