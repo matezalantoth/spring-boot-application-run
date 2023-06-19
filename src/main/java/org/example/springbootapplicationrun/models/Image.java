@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URL;
 import java.time.Instant;
 
@@ -22,6 +23,8 @@ public class Image {
     private String url;
     private String localLink;
     private Integer postId;
+    private BigInteger marketplaceId;
+    private String imageContent;
     private ImageStatus status;
 
     public Image(){
@@ -77,18 +80,20 @@ public class Image {
 
     }
 
-    public String getImageContent() throws IOException {
-
-         String imageDataString = "data:image/png;base64," + getBase64EncodedImage() ;
-        return imageDataString;
-
+    public BigInteger getMarketplaceId() {
+        return marketplaceId;
     }
 
-    public String getBase64EncodedImage() throws IOException {
-        URL webUrl = new URL(url);
-        InputStream is = webUrl.openStream();
-        byte[] bytes = toByteArray(is);
-        return Base64.encodeBase64String(bytes);
+    public void setMarketplaceId(BigInteger marketplaceId) {
+        this.marketplaceId = marketplaceId;
+    }
+
+    public String getImageContent() {
+        return imageContent;
+    }
+
+    public void setImageContent(String imageContent) {
+        this.imageContent = imageContent;
     }
 
     public ImageStatus getStatus() {
@@ -98,6 +103,28 @@ public class Image {
     public void setStatus(ImageStatus status) {
         this.status = status;
     }
+
+//    public String getImageContent() throws IOException {
+//
+//         String imageDataString = "data:image/png;base64," + getBase64EncodedImage() ;
+//        return imageDataString;
+//
+//    }
+//
+//    public String getBase64EncodedImage() throws IOException {
+//        URL webUrl = new URL(url);
+//        InputStream is = webUrl.openStream();
+//        byte[] bytes = toByteArray(is);
+//        return Base64.encodeBase64String(bytes);
+//    }
+//
+//    public ImageStatus getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(ImageStatus status) {
+//        this.status = status;
+//    }
 }
 
 
