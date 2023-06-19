@@ -84,10 +84,9 @@ public class DownloadMarketplaceCars {
                             String imageAsString = image.getImageContent();
                             finalCar.setImageContent(imageAsString);
 
-
                             imageContainer.addImage(image);
                             carServer.updateCar(finalCar);
-                            Thread.sleep(1000);
+                            Thread.sleep(3000);
 
                         } catch (Exception e) {
                             String message = e.getMessage();
