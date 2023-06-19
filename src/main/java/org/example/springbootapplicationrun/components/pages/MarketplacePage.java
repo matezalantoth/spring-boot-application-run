@@ -43,7 +43,7 @@ public class MarketplacePage {
                     return;
                 }
 
-                String screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
+                String screenshot = ((TakesScreenshot)image).getScreenshotAs(OutputType.BASE64);
 
                 System.out.println(image.getAttribute("alt"));
                 System.out.println(image.getAttribute("src"));
