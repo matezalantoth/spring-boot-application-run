@@ -20,6 +20,18 @@ public class Post {
     private GetPostStatus pusherStatus;
     private LocalDateTime scheduledTo;
     private LocalDateTime statusChangedAt;
+    private Integer roS;
+    private Integer toH;
+    private Integer wMoD;
+    private Integer aCT;
+    private Integer hT;
+    private Integer pF;
+    private Integer pT;
+    private String bed;
+    private String bath;
+    private String propSize;
+    private String availAt;
+
 
     public Post() {
         status = PostStatus.PENDING;
@@ -160,4 +172,91 @@ public class Post {
     }
 
 
+    public Integer getRoS() {
+        return roS;
+    }
+
+    public void setRoS(Integer roS) {
+        this.roS = roS;
+    }
+
+    public Integer getToH() {
+        return toH;
+    }
+
+    public void setToH(Integer toH) {
+        this.toH = toH;
+    }
+
+    public Integer getWMoD() {
+        return wMoD;
+    }
+
+    public void setWMoD(Integer wMoD) {
+        this.wMoD = wMoD;
+    }
+
+    public Integer getACT() {
+        return aCT;
+    }
+
+    public void setACT(Integer aCT) {
+        this.aCT = aCT;
+    }
+
+    public Integer getHT() {
+        return hT;
+    }
+
+    public void setHT(Integer hT) {
+        this.hT = hT;
+    }
+
+    public Integer getPF() {
+        return pF;
+    }
+
+    public void setPF(Integer pF) {
+        this.pF = pF;
+    }
+
+    public String getBed() {
+        return bed;
+    }
+
+    public void setBed(String bed) {
+        this.bed = bed;
+    }
+
+    public String getBath() {
+        return bath;
+    }
+
+    public void setBath(String bath) {
+        this.bath = bath;
+    }
+
+    public String getPropSize() {
+        return propSize;
+    }
+
+    public void setPropSize(String propSize) {
+        this.propSize = propSize;
+    }
+
+    public String getAvailAt() {
+        return availAt;
+    }
+
+    public void setAvailAt(String availAt) {
+        this.availAt = availAt;
+    }
+
+    public Integer getpT() {
+        return pT;
+    }
+
+    public void setpT(Integer pT) {
+        this.pT = pT;
+    }
 }
