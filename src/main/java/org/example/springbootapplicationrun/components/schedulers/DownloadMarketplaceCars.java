@@ -65,7 +65,7 @@ public class DownloadMarketplaceCars {
                         return;
                     }
 
-                    MarketplacePage marketplacePage = new MarketplacePage(driver);
+                    MarketplacePage marketplacePage = new MarketplacePage(driver, imageContainer);
                     List<Car> carsInfo = marketplacePage.getCars(link);
                     carServer.sendCarsToServer(carsInfo);
                     carsInfo.forEach(finalCar -> {

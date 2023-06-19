@@ -1,7 +1,5 @@
 package org.example.springbootapplicationrun.components.containers;
 
-import org.example.springbootapplicationrun.enums.ImageStatus;
-import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Image;
 import org.springframework.stereotype.Component;
 
@@ -12,22 +10,20 @@ public class ImageContainer {
 
     private LinkedHashMap<BigInteger, Image> images;
 
-    public ImageContainer(){
-        this.images = new LinkedHashMap<>();
+    public ImageContainer() {
+        images = new LinkedHashMap<>();
     }
 
     public void addImage(Image image){
-        images.put(image.getMarketplaceId(), image);
-    }
 
-    public LinkedHashMap<BigInteger, Image> getImages(){
-        return images;
-    }
+        BigInteger marketplaceId = image.getMarketplaceId();
+        if (images.containsKey(marketplaceId)) {
+            return;
+        }
+        images.put(marketplaceId, image);
+        System.out.println("added");
 
-    public boolean doesExist(BigInteger marketplaceId){
-        return images.containsKey(marketplaceId);
     }
-
 
     public Image getImageByMarketplaceId(BigInteger marketplaceId){
 
