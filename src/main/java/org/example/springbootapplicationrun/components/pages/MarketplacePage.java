@@ -1,14 +1,19 @@
 package org.example.springbootapplicationrun.components.pages;
 
+import org.apache.commons.io.FileUtils;
 import org.example.springbootapplicationrun.components.clients.CarServer;
+import org.example.springbootapplicationrun.components.containers.ImageContainer;
 import org.example.springbootapplicationrun.models.Car;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.example.springbootapplicationrun.models.Image;
+import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,6 +23,8 @@ public class MarketplacePage {
 
     @Autowired
     private CarServer carServer;
+    @Autowired
+    private ImageContainer imageContainer;
 
     WebDriver driver;
 
@@ -38,10 +45,14 @@ public class MarketplacePage {
 
             try {
 
+                LocalDateTime time = LocalDateTime.now();
+
                 String name = image.getAttribute("alt");
                 if (name.equals("Loading more items") || (name.isEmpty())) {
                     return;
                 }
+
+                String screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BASE64);
 
                 System.out.println(image.getAttribute("alt"));
                 System.out.println(image.getAttribute("src"));
@@ -72,8 +83,18 @@ public class MarketplacePage {
                 car.setPrice(price.getText());
                 car.setDistance(distanceText);
 
+
+
                 BigInteger marketplaceId = regexMarketplaceId(car);
                 car.setMarketplaceId(marketplaceId);
+
+                if (!imageContainer.doesExist(marketplaceId)){
+
+                    Image carImage = new Image();
+                    carImage.setMarketplaceId(marketplaceId);
+                    carImage.setImageContent(screenshot);
+                    imageContainer.addImage(carImage);
+                }
 
                 carsInfo.add(car);
 

@@ -13,11 +13,13 @@ import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Image;
 import org.example.springbootapplicationrun.models.User;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +45,8 @@ public class DownloadMarketplaceCars {
     public void downloadCars() throws Exception {
         Car car = new Car();
 
-        ArrayList<String> links = new ArrayList<>();
-        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
-        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=1000000&maxPrice=2000000&sortBy=creation_time_descend&exact=false");
-        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=2000000&maxPrice=3000000&sortBy=creation_time_descend&exact=false");
-        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=3000000&maxPrice=4000000&sortBy=creation_time_descend&exact=false");
+        ArrayList<String> links = getLinks();
+
         List<User> users = carUserContainer.getQueue();
         links.forEach(link -> {
 
@@ -71,24 +70,22 @@ public class DownloadMarketplaceCars {
                     carServer.sendCarsToServer(carsInfo);
                     carsInfo.forEach(finalCar -> {
 
-                        String url = finalCar.getImage();
+                        Image image = imageContainer.getImageByMarketplaceId(finalCar.getMarketplaceId());
 
-                        Image image = imageContainer.getImageByURL(url);
+                        ImageStatus imageStatus = image.getStatus();
+                        if (imageStatus == ImageStatus.DOWNLOADED){
+                            return;
+                        }
+
                         try {
 
-                            ImageStatus currentImageStatus = image.getStatus();
-                            if (currentImageStatus == ImageStatus.DOWNLOADED){
-                                return;
-                            }
-
-                            String imageAsString = image.getImageContent();
-                            finalCar.setImageContent(imageAsString);
-
-                            imageContainer.addImage(image);
+                            finalCar.setImageContent(image.getImageContent());
                             carServer.updateCar(finalCar);
+                            image.setStatus(ImageStatus.DOWNLOADED);
                             Thread.sleep(1000);
 
                         } catch (Exception e) {
+
                             String message = e.getMessage();
                             System.out.println(message);
                             throw new RuntimeException(e);
@@ -110,6 +107,16 @@ public class DownloadMarketplaceCars {
         });
 
 
+    }
+
+    public ArrayList<String> getLinks(){
+        ArrayList<String> links = new ArrayList<>();
+        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
+
+        for (int i = 1; i <= 20; i++) {
+            links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice="+ i +"000000&maxPrice="+ (i+1) +"000000&sortBy=creation_time_descend&exact=false");
+        }
+        return links;
     }
 }
 
