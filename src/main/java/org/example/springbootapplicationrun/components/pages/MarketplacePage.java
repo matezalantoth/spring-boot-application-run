@@ -1,18 +1,12 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import org.apache.commons.io.FileUtils;
-import org.example.springbootapplicationrun.components.clients.CarServer;
 import org.example.springbootapplicationrun.components.containers.ImageContainer;
 import org.example.springbootapplicationrun.models.Car;
 import org.example.springbootapplicationrun.models.Image;
 import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MarketplacePage {
-
-    @Autowired
-    private CarServer carServer;
-    @Autowired
-    private ImageContainer imageContainer;
-
     WebDriver driver;
 
-    public MarketplacePage(WebDriver driver) {
+    ImageContainer imageContainer;
+
+    public MarketplacePage(WebDriver driver, ImageContainer imageContainer) {
         this.driver = driver;
+        this.imageContainer = imageContainer;
     }
 
     public List<Car> getCars(String facebookLink) throws InterruptedException {
@@ -88,13 +79,10 @@ public class MarketplacePage {
                 BigInteger marketplaceId = regexMarketplaceId(car);
                 car.setMarketplaceId(marketplaceId);
 
-                if (!imageContainer.doesExist(marketplaceId)){
-
-                    Image carImage = new Image();
-                    carImage.setMarketplaceId(marketplaceId);
-                    carImage.setImageContent(screenshot);
-                    imageContainer.addImage(carImage);
-                }
+                Image carImage = new Image();
+                carImage.setMarketplaceId(marketplaceId);
+                carImage.setImageContent("data:image/png;base64," + screenshot);
+                imageContainer.addImage(carImage);
 
                 carsInfo.add(car);
 
