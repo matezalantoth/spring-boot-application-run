@@ -2,7 +2,6 @@ package org.example.springbootapplicationrun.components.containers;
 
 import org.example.springbootapplicationrun.enums.ImageStatus;
 import org.example.springbootapplicationrun.models.Image;
-import org.example.springbootapplicationrun.models.User;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
@@ -10,6 +9,10 @@ import java.util.LinkedHashMap;
 public class ImageContainer {
 
     private LinkedHashMap<String, Image> images;
+
+    public ImageContainer(){
+        this.images = new LinkedHashMap<>();
+    }
 
     public void addImage(Image image){
         image.setStatus(ImageStatus.DOWNLOADED);
