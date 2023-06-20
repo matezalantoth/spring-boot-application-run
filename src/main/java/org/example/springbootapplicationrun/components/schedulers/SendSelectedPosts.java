@@ -72,8 +72,8 @@ public class SendSelectedPosts {
             }
 
         }
-        if (postContainer.getPosts().size() > 0){
-            sendSelectedPosts();
-        }
+//        if (postContainer.getPosts().size() > 0){
+//            sendSelectedPosts();
+//        }
     }
 }

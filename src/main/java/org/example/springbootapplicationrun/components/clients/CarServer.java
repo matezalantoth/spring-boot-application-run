@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 @Component
@@ -45,7 +46,9 @@ public class CarServer {
                 })
                 .body(BodyInserters.fromValue(carsFinal.toString()))
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(String.class)
+                        .timeout(Duration.ofMinutes(1));
+
         response.block();
         response.subscribe(e -> {
             System.out.println("------------------------------RESPONSE----------------------------------");

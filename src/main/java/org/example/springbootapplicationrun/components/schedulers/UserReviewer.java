@@ -23,7 +23,7 @@ public class UserReviewer {
     @Autowired
     private UserUpdater userUpdater;
 
-    @Scheduled(fixedRate = 60_000)
+//    @Scheduled(fixedRate = 60_000)
     public void reviewUsers() {
 
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();

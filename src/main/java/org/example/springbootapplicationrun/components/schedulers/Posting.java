@@ -59,9 +59,10 @@ public class Posting {
             data.setStatus(DataStatus.PROCESSED);
 
         });
-        if (newDataList.size() >0){
-            downloadAndSendPosts();
-        }
+//        newDataList = queueContainer.getQueue();
+//        if (newDataList.size() >0){
+//            downloadAndSendPosts();
+//        }
 
     }
 

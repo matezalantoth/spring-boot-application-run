@@ -31,11 +31,24 @@ public class Post {
     private String bath;
     private String propSize;
     private String availAt;
+    private String address;
 
 
     public Post() {
         status = PostStatus.PENDING;
         pusherStatus = GetPostStatus.INIT;
+        roS = 0;
+        toH = 0;
+        wMoD = 0;
+        aCT = 0;
+        hT = 0;
+        pF = 0;
+        pT = 0;
+        bed = "3";
+        bath = "1.5";
+        propSize = "10,000";
+        availAt = "6 9 2023";
+        address = "Szeged 6722";
     }
 
     public void setStatusChangedAt(LocalDateTime statusChangedAt) {
@@ -258,5 +271,13 @@ public class Post {
 
     public void setpT(Integer pT) {
         this.pT = pT;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

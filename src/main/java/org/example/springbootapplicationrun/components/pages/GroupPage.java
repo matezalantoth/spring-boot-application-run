@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.Objects;
 
@@ -39,26 +40,27 @@ public class GroupPage {
     }
 
     public void postListing(Post post, WebDriver driver) throws InterruptedException{
-        driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId() + "/buy_sell_discussion");
+        driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId());
         Thread.sleep(2000);
 
         driver.findElement(By.xpath("//div[@aria-label='Sell Something']")).click();
-        Thread.sleep(2000);
+        Thread.sleep(15000);
 
         driver.findElement(By.xpath("(//i [@data-visualcompletion=\"css-img\"]/parent::div/parent::div/parent::div/parent::div/parent::div[@role=\"button\"])[3]")).click();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         driver.findElement(By.xpath("//input[@accept=\"image/*,image/heif,image/heic\"]")).sendKeys(post.getImageLocation());
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         driver.findElement(By.xpath("//label[@aria-label=\"Property for sale or rent\"]")).click();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         rentOrForSale(post, driver);
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//div[@aria-label = \"Next\"]")).click();
+        Thread.sleep(5000);
 
-        Thread.sleep(2000);
+        driver.findElement(By.xpath("//div[@aria-label = \"Next\"]")).click();
+        Thread.sleep(5000);
+
         driver.findElement(By.xpath("//div[@aria-label = \"Post\"]")).click();
 
         }
@@ -67,33 +69,49 @@ public class GroupPage {
 
         if (post.getRoS() == 0) {
 
-            driver.findElement(By.xpath("(//span[@dir=\"auto\"])[371]")).click();
-            Thread.sleep(2000);
+            driver.findElement(By.xpath("//div [@role = 'option']")).click();
+
             driver.findElement(By.xpath("//label [@aria-label=\"Type of property for rent\"]")).click();
+
             typeOfHouseSelector(post, driver);
+            Thread.sleep(2000);
             textBoxes(post, driver);
+            Thread.sleep(2000);
             washingMachineOrDryer(post, driver);
+            Thread.sleep(2000);
             parkingType(post, driver);
+            Thread.sleep(2000);
             airConditioningType(post, driver);
+            Thread.sleep(2000);
             heatingType(post, driver);
+            Thread.sleep(2000);
             petFriendly(post, driver);
+            Thread.sleep(2000);
 
             return;
         }
 
         if (post.getRoS() == 1) {
 
-            driver.findElement(By.xpath("(//span[@dir=\"auto\"])[372]")).click();
+            driver.findElement(By.xpath("(//div [@role = 'option'])[2]")).click();
+
             typeOfHouseSelector(post, driver);
+            Thread.sleep(2000);
             textBoxes(post, driver);
+            Thread.sleep(2000);
             washingMachineOrDryer(post, driver);
+            Thread.sleep(2000);
             parkingType(post, driver);
+            Thread.sleep(2000);
             airConditioningType(post, driver);
+            Thread.sleep(2000);
             heatingType(post, driver);
+            Thread.sleep(2000);
 
         }
 
     }
+//Select rentOrSaleDrop = new Select(driver.findElement(By.xpath("//div [@role = 'option']")));
 
     public void typeOfHouseSelector(Post post, WebDriver driver){
 
@@ -110,16 +128,25 @@ public class GroupPage {
         }
     }
 
-    public void textBoxes(Post post, WebDriver driver){
+    public void textBoxes(Post post, WebDriver driver) throws InterruptedException{
 
-        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[4]")).sendKeys(post.getBed());
-        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[5]")).sendKeys(post.getBath());
-        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[6]")).sendKeys(post.getPrice() + "ft");
-        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[7]")).sendKeys(post.getTitle());
+        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[2]")).sendKeys(post.getBed());
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[3]")).sendKeys(post.getBath());
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[4]")).sendKeys(post.getPrice() + "ft");
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[5]")).sendKeys(post.getAddress());
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//div [@role = \"option\"]")).click();
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//textarea [@dir=\"ltr\"]")).sendKeys(post.getDescription());
-        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[8]")).sendKeys(post.getPropSize());
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[6]")).sendKeys(post.getPropSize());
+        Thread.sleep(2000);
         if (post.getRoS() == 0) {
-            driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[9]")).sendKeys(post.getAvailAt());
+            driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[7]")).sendKeys(post.getAvailAt());
+            Thread.sleep(2000);
         }
 
     }
@@ -192,7 +219,7 @@ public class GroupPage {
     }
 
     public void heatingType(Post post, WebDriver driver){
-        driver.findElement(By.xpath("//label[aria-label=\"Heating type\"]")).click();
+        driver.findElement(By.xpath("//label[@aria-label=\"Heating type\"]")).click();
 
         if (post.getHT() == 0){
             driver.findElement(By.xpath("//div[@role=\"option\"]")).click();
