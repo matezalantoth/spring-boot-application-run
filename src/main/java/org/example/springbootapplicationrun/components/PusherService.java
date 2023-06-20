@@ -68,7 +68,6 @@ public class PusherService {
             public void onEvent(PusherEvent event) {
 
                 System.out.println("Received spring custom event - " + event.getData());
-                System.out.println("Received event with data: " + event.toString());
                 JSONObject jsonObject = new JSONObject(event.getData());
                 queueContainer.addPusherData(jsonObject);
 

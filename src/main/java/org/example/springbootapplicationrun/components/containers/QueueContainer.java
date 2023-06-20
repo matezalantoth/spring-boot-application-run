@@ -17,6 +17,7 @@ public class QueueContainer {
     private List<Data> queueData;
 
     public QueueContainer(){
+
         this.queueData = new ArrayList<>();
     }
 
@@ -38,6 +39,7 @@ public class QueueContainer {
     }
 
     public List<Data> getQueue() {
+
         return queueData;
     }
 }

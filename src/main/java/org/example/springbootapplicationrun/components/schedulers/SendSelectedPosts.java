@@ -54,7 +54,7 @@ public class SendSelectedPosts {
                 try {
 
                     GroupPage groupPage = new GroupPage();
-                    groupPage.sendPost(post, driver);
+                    groupPage.postListing(post, driver);
 
                 } catch (Exception e) {
                     String message = e.getMessage();
@@ -72,8 +72,8 @@ public class SendSelectedPosts {
             }
 
         }
-        if (postContainer.getPosts().size() > 0){
-            sendSelectedPosts();
-        }
+//        if (postContainer.getPosts().size() > 0){
+//            sendSelectedPosts();
+//        }
     }
 }
