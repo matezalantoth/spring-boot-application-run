@@ -1,17 +1,14 @@
 package org.example.springbootapplicationrun.components.pages;
 
-import org.example.springbootapplicationrun.components.clients.UserClient;
-import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.GroupInfo;
 import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.User;
-import org.example.springbootapplicationrun.models.UserReport;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
-import java.util.Objects;
+import java.util.List;
 
 public class GroupPage {
 
@@ -39,7 +36,7 @@ public class GroupPage {
 
     }
 
-    public void postListing(Post post, WebDriver driver) throws InterruptedException{
+    public void postListing(Post post, WebDriver driver) throws InterruptedException {
         driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId());
         Thread.sleep(2000);
 
@@ -61,11 +58,14 @@ public class GroupPage {
         driver.findElement(By.xpath("//div[@aria-label = \"Next\"]")).click();
         Thread.sleep(5000);
 
+        postToGroups(post, driver);
+        Thread.sleep(2000);
+
         driver.findElement(By.xpath("//div[@aria-label = \"Post\"]")).click();
 
-        }
+    }
 
-    public void rentOrForSale(Post post, WebDriver driver) throws InterruptedException{
+    public void rentOrForSale(Post post, WebDriver driver) throws InterruptedException {
 
         if (post.getRoS() == 0) {
 
@@ -113,22 +113,32 @@ public class GroupPage {
     }
 //Select rentOrSaleDrop = new Select(driver.findElement(By.xpath("//div [@role = 'option']")));
 
-    public void typeOfHouseSelector(Post post, WebDriver driver){
+    public void typeOfHouseSelector(Post post, WebDriver driver) {
 
-        if (post.getToH() == 0){
+        if (post.getToH() == 0) {
+            //House
             driver.findElement(By.xpath("//div [@role = \"option\"]")).click();
             return;
         }
-        if (post.getToH() == 1){
+        if (post.getToH() == 1) {
+            //Townhouse
             driver.findElement(By.xpath("(//div [@role = \"option\"])[2]")).click();
             return;
         }
-        if (post.getToH() == 2){
+        if (post.getToH() == 2) {
+            //Flat or Apartment
             driver.findElement(By.xpath("(//div [@role = \"option\"])[3]")).click();
         }
+        if (post.getToH() == 3) {
+            //Room only
+            if (post.getRoS() == 0) {
+                driver.findElement(By.xpath("(//div [@role = \"option\"])[3]")).click();
+            }
+        }
+
     }
 
-    public void textBoxes(Post post, WebDriver driver) throws InterruptedException{
+    public void textBoxes(Post post, WebDriver driver) throws InterruptedException {
 
         driver.findElement(By.xpath("(//input [@dir=\"ltr\"])[2]")).sendKeys(post.getBed());
         Thread.sleep(2000);
@@ -151,112 +161,126 @@ public class GroupPage {
 
     }
 
-    public void washingMachineOrDryer(Post post, WebDriver driver){
+    public void washingMachineOrDryer(Post post, WebDriver driver) {
 
         driver.findElement(By.xpath("//label[@aria-label = \"Washing machine/dryer\"]")).click();
 
-        if (post.getWMoD() == 0){
+        if (post.getWMoD() == 0) {
+            //Washing Machine
             driver.findElement(By.xpath("//div[@role=\"option\"]")).click();
             return;
         }
-        if (post.getWMoD() == 1){
+        if (post.getWMoD() == 1) {
+            //Launderette
             driver.findElement(By.xpath("(//div[@role=\"option\"])[2]")).click();
             return;
         }
-        if (post.getWMoD() == 2){
+        if (post.getWMoD() == 2) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[3]")).click();
             return;
         }
-        if (post.getWMoD() == 3){
+        if (post.getWMoD() == 3) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[4]")).click();
         }
 
 
     }
 
-    public void parkingType(Post post, WebDriver driver){
+    public void parkingType(Post post, WebDriver driver) {
 
         driver.findElement(By.xpath("//label[@aria-label=\"Parking type\"]")).click();
 
-        if (post.getpT() == 0){
+        if (post.getpT() == 0) {
             driver.findElement(By.xpath("//div[@role=\"option\"]")).click();
             return;
         }
-        if (post.getpT() == 1){
+        if (post.getpT() == 1) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[2]")).click();
             return;
         }
-        if (post.getpT() == 2){
+        if (post.getpT() == 2) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[3]")).click();
             return;
         }
-        if (post.getpT() == 3){
+        if (post.getpT() == 3) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[4]")).click();
             return;
         }
-        if (post.getpT() == 4){
+        if (post.getpT() == 4) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[5]")).click();
 
         }
     }
 
-    public void airConditioningType(Post post, WebDriver driver){
+    public void airConditioningType(Post post, WebDriver driver) {
         driver.findElement(By.xpath("//label[@aria-label=\"Air conditioning\"]")).click();
 
-        if (post.getACT() == 0){
+        if (post.getACT() == 0) {
             driver.findElement(By.xpath("//div[@role=\"option\"]")).click();
             return;
         }
-        if (post.getACT() == 1){
+        if (post.getACT() == 1) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[2]")).click();
             return;
         }
-        if (post.getACT() == 2){
+        if (post.getACT() == 2) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[3]")).click();
         }
 
 
     }
 
-    public void heatingType(Post post, WebDriver driver){
+    public void heatingType(Post post, WebDriver driver) {
         driver.findElement(By.xpath("//label[@aria-label=\"Heating type\"]")).click();
 
-        if (post.getHT() == 0){
+        if (post.getHT() == 0) {
             driver.findElement(By.xpath("//div[@role=\"option\"]")).click();
             return;
         }
-        if (post.getHT() == 1){
+        if (post.getHT() == 1) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[2]")).click();
             return;
         }
-        if (post.getHT() == 2){
+        if (post.getHT() == 2) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[3]")).click();
             return;
         }
-        if (post.getHT() == 3){
+        if (post.getHT() == 3) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[4]")).click();
             return;
         }
-        if (post.getHT() == 4){
+        if (post.getHT() == 4) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[5]")).click();
             return;
         }
-        if (post.getHT() == 5){
+        if (post.getHT() == 5) {
             driver.findElement(By.xpath("(//div[@role=\"option\"])[6]")).click();
         }
 
     }
 
-    public void petFriendly(Post post, WebDriver driver){
-        if (post.getPF() == 0){
+    public void petFriendly(Post post, WebDriver driver) {
+        if (post.getPF() == 0) {
             driver.findElement(By.xpath("(//input[@role = \"switch\"])[2]")).click();
             return;
         }
-        if (post.getPF() == 1){
+        if (post.getPF() == 1) {
             driver.findElement(By.xpath("(//input[@role = \"switch\"])[3]")).click();
         }
     }
 
+    public void postToGroups(Post post, WebDriver driver) {
+
+        List<GroupInfo> groups = post.getGroups();
+        groups.forEach(groupInfo -> {
+            String groupName = groupInfo.getName();
+            driver.findElement(By.xpath("//span[contains(text(), " + groupName + ")]/parent::span/parent::span/parent::div/parent::div/parent::div/parent::div/following-sibling::div/child::div/child::div/child::i")).click();
+
+        });
+    }
 
 }
+
+
+
 

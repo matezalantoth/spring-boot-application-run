@@ -11,6 +11,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserGroupPage {
 
     WebDriver driver;
@@ -20,15 +23,15 @@ public class UserGroupPage {
         this.driver = driver;
     }
 
-    public JSONArray getGroups() throws InterruptedException {
+    public List<GroupInfo> getGroups() throws InterruptedException {
 
         driver.get("https://www.facebook.com/groups/joins");
 
         Thread.sleep(2000);
 
-        JSONArray groups = new JSONArray();
-
         scrollDown();
+
+        List<GroupInfo> groups = new ArrayList<>();
 
         driver.findElements(By.xpath("//a [@aria-label='View group']")).forEach(groupLink -> {
 
@@ -43,8 +46,8 @@ public class UserGroupPage {
             group.setImage(groupLink.findElement(By.xpath("./parent::div/preceding-sibling::div/div/a/div/div//*//*/following-sibling::*//*")).getAttribute("xlink:href"));
             System.out.println(groupLink.findElement(By.xpath("./parent::div/preceding-sibling::div/div/a/div/div//*//*/following-sibling::*//*")).getAttribute("xlink:href"));
 
-            JSONObject jsonObject = group.getJSONGroupInfo();
-            groups.put(jsonObject);
+            groups.add(group);
+
 
 
         });

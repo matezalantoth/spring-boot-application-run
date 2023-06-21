@@ -3,18 +3,18 @@ package org.example.springbootapplicationrun.models;
 import org.example.springbootapplicationrun.enums.GetGroupsStatus;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class GroupInfo {
 
-    String link;
+    private String link;
 
-    String name;
-
-    String image;
-
-    GetGroupsStatus status;
-    LocalDateTime statusChangedAt;
+    private String name;
+    private BigInteger id;
+    private String image;
+    private GetGroupsStatus status;
+    private LocalDateTime statusChangedAt;
 
     public GroupInfo(){
         status = GetGroupsStatus.INIT;
@@ -67,4 +67,11 @@ public class GroupInfo {
     }
 
 
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 }

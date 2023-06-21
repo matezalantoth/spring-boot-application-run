@@ -4,6 +4,8 @@ import org.example.springbootapplicationrun.enums.UserStatus;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -12,6 +14,13 @@ public class User {
     private Integer id;
     private UserStatus status;
     private LocalDateTime statusChangedAt;
+    private List<GroupInfo> groups;
+
+
+    public User() {
+        setStatus(UserStatus.VALID);
+        this.groups = new ArrayList<>();
+    }
 
     public JSONObject getUserData() {
         return userData;
@@ -31,10 +40,6 @@ public class User {
         this.statusChangedAt = statusChangedAt;
     }
 
-
-    public User() {
-        setStatus(UserStatus.VALID);
-    }
 
     public void setEmail(String email) {
         this.email = email;

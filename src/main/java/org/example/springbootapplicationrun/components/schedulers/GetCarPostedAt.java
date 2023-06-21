@@ -29,13 +29,13 @@ public class GetCarPostedAt {
     @Autowired
     private CarServer carServer;
 
-    @Scheduled(fixedRate = 300_000, initialDelay = 20_000)
+    @Scheduled(fixedRate = 60_000, initialDelay = 20_000)
     public void getPostedAt() {
         List<CarId> carIds = carIdsContainer.getCarIds();
         carIds.forEach(carId -> {
             try {
 
-                if (carId.getStatus() == CarLinksStatus.FINISHED){
+                if (carId.getStatus() != CarLinksStatus.INIT){
                     return;
                 }
 
@@ -59,8 +59,8 @@ public class GetCarPostedAt {
                 carId.setStatus(CarLinksStatus.FINISHED);
 
             } catch (Exception e) {
-                throw new RuntimeException(e);
-                
+                carId.setStatus(CarLinksStatus.FAILED);
+
             }
         });
     }

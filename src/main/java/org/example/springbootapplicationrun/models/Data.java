@@ -2,18 +2,22 @@ package org.example.springbootapplicationrun.models;
 
 import org.example.springbootapplicationrun.enums.DataStatus;
 import org.example.springbootapplicationrun.enums.PostStatus;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Data {
 
     private JSONObject user;
     private JSONObject post;
+    private JSONArray group;
     private Integer userId;
     private Integer postId;
+    private String groupName;
     private DataStatus status;
 
     public Data(){
         status = DataStatus.PROCESSING;
+        group = new JSONArray();
 
     }
 
@@ -55,6 +59,19 @@ public class Data {
     }
 
 
+    public JSONArray getGroup() {
+        return group;
+    }
 
+    public void setGroup(JSONArray group) {
+        this.group = group;
+    }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }
