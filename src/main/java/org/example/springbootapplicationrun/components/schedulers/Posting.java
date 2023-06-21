@@ -6,6 +6,7 @@ import org.example.springbootapplicationrun.enums.DataStatus;
 import org.example.springbootapplicationrun.enums.GetPostStatus;
 import org.example.springbootapplicationrun.models.Data;
 import org.example.springbootapplicationrun.models.Post;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -7,6 +7,8 @@ import org.example.springbootapplicationrun.components.containers.GroupUserConta
 import org.example.springbootapplicationrun.components.containers.UserContainer;
 import org.example.springbootapplicationrun.components.pages.UserGroupPage;
 import org.example.springbootapplicationrun.enums.UserStatus;
+import org.example.springbootapplicationrun.models.GroupInfo;
+import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.User;
 import org.json.JSONArray;
 import org.openqa.selenium.WebDriver;
@@ -49,8 +51,8 @@ public class GetGroupLinks {
                 }
 
                 UserGroupPage userGroupPage = new UserGroupPage(driver);
-                JSONArray links = userGroupPage.getGroups();
-                groupLinksServer.sendLinksToServer(links);
+                List<GroupInfo> groups = userGroupPage.getGroups();
+                groupLinksServer.sendLinksToServer(groups);
 
             } catch (Exception e) {
                 String message = e.getMessage();

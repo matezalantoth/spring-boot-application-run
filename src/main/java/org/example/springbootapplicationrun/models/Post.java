@@ -2,15 +2,19 @@ package org.example.springbootapplicationrun.models;
 
 import org.example.springbootapplicationrun.enums.GetPostStatus;
 import org.example.springbootapplicationrun.enums.PostStatus;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
     private String title;
     private String description;
     private List<Image> images;
+    private List<GroupInfo> groups;
     private Integer price;
     private String link;
     private Integer postId;
@@ -20,6 +24,7 @@ public class Post {
     private GetPostStatus pusherStatus;
     private LocalDateTime scheduledTo;
     private LocalDateTime statusChangedAt;
+    private Integer postOrList;
     private Integer roS;
     private Integer toH;
     private Integer wMoD;
@@ -34,7 +39,10 @@ public class Post {
     private String address;
 
 
+
     public Post() {
+        this.groups = new ArrayList<>();
+
         status = PostStatus.PENDING;
         pusherStatus = GetPostStatus.INIT;
         roS = 0;
@@ -44,11 +52,26 @@ public class Post {
         hT = 0;
         pF = 0;
         pT = 0;
+        postOrList = 1;
         bed = "3";
         bath = "1.5";
         propSize = "10,000";
         availAt = "6 9 2023";
         address = "Szeged 6722";
+    }
+
+    public void addGroup(JSONArray groupData){
+        groupData.forEach(data ->{
+            JSONObject trueData = (JSONObject) data;
+            GroupInfo groupInfo = new GroupInfo();
+            groupInfo.setName(trueData.getString("groupName"));
+            groupInfo.setId(trueData.getBigInteger("groupId"));
+            groups.add(groupInfo);
+        });
+    }
+
+    public List<GroupInfo> getGroups(){
+        return groups;
     }
 
     public void setStatusChangedAt(LocalDateTime statusChangedAt) {
@@ -97,7 +120,7 @@ public class Post {
     }
 
     public BigInteger getFacebookGroupId() {
-        return facebookGroupId;
+        return groups.get(0).getId();
     }
 
     public void setUserId(Integer userId) {
@@ -279,5 +302,14 @@ public class Post {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+
+    public Integer getPostOrList() {
+        return postOrList;
+    }
+
+    public void setPostOrList(Integer postOrList) {
+        this.postOrList = postOrList;
     }
 }

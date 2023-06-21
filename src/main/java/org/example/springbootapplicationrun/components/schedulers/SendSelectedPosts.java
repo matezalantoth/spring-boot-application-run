@@ -11,6 +11,8 @@ import org.example.springbootapplicationrun.enums.PostStatus;
 import org.example.springbootapplicationrun.enums.UserStatus;
 import org.example.springbootapplicationrun.models.Post;
 import org.example.springbootapplicationrun.models.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,11 +52,16 @@ public class SendSelectedPosts {
                 userUpdater.updateStatus(user, UserStatus.IN_USE);
                 WebDriver driver = facebookBrowser.getBrowser(user);
 
-
                 try {
 
                     GroupPage groupPage = new GroupPage();
-                    groupPage.postListing(post, driver);
+
+                    if (post.getPostOrList() == 0){
+                        groupPage.sendPost(post, driver);
+                    }
+                    if (post.getPostOrList() == 1) {
+                        groupPage.postListing(post, driver);
+                    }
 
                 } catch (Exception e) {
                     String message = e.getMessage();
