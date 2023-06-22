@@ -13,8 +13,10 @@ import java.util.List;
 public class GroupPage {
 
     public void sendPost(Post post, WebDriver driver) throws InterruptedException {
-
         driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId());
+        Thread.sleep(2000);
+        String url = driver.findElement(By.xpath("(//span[contains(text(), \"Discussion\")])[2]/parent::div/parent::a")).getAttribute("href");
+        driver.get(url);
         Thread.sleep(2000);
 
         driver.findElement(By.xpath("//span[text() = 'Write something...']")).click();
@@ -38,6 +40,9 @@ public class GroupPage {
 
     public void postListing(Post post, WebDriver driver) throws InterruptedException {
         driver.get("https://www.facebook.com/groups/" + post.getFacebookGroupId());
+        Thread.sleep(2000);
+        String url = driver.findElement(By.xpath("(//span[contains(text(), \"Buy and sell\")])[2]/parent::div//parent::a")).getAttribute("href");
+        driver.get(url);
         Thread.sleep(2000);
 
         driver.findElement(By.xpath("//div[@aria-label='Sell Something']")).click();
