@@ -39,6 +39,8 @@ public class PusherService {
 
     @Value("${pusher.api.key}")
     String apiKey;
+    @Value("${computer.id}")
+    Integer computerId;
 
     @PostConstruct
     public void init() {
@@ -68,8 +70,12 @@ public class PusherService {
             public void onEvent(PusherEvent event) {
 
                 System.out.println("Received spring custom event - " + event.getData());
-                JSONObject jsonObject = new JSONObject(event.getData());
-                queueContainer.addPusherData(jsonObject);
+                JSONObject data = new JSONObject(event.getData());
+                Integer pusherComputerId = data.getJSONObject("computer").getInt("computerId");
+                if (computerId != pusherComputerId){
+                    return;
+                }
+                queueContainer.addPusherData(data);
 
             }
         });
@@ -77,11 +83,13 @@ public class PusherService {
         channel.bind("get-cars", new SubscriptionEventListener() {
             @Override
             public void onEvent(PusherEvent event) {
-
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
+                Integer pusherComputerId = data.getJSONObject("computer").getInt("computerId");
+                if (computerId != pusherComputerId){
+                    return;
+                }
                 carUserContainer.addPusherData(data);
-
             }
         });
 
@@ -90,6 +98,10 @@ public class PusherService {
             public void onEvent(PusherEvent event) {
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
+                Integer pusherComputerId = data.getJSONObject("computer").getInt("computerId");
+                if (computerId != pusherComputerId){
+                    return;
+                }
                 carIdsContainer.addPusherData(data);
 
             }
@@ -100,6 +112,10 @@ public class PusherService {
             public void onEvent(PusherEvent event) {
                 System.out.println("Received event with data: " + event.toString());
                 JSONObject data = new JSONObject(event.getData());
+                Integer pusherComputerId = data.getJSONObject("computer").getInt("computerId");
+                if (computerId != pusherComputerId){
+                    return;
+                }
                 groupUserContainer.addPusherData(data);
 
             }
