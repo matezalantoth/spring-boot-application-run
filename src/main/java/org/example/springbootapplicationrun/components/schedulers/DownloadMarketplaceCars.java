@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,23 +46,25 @@ public class DownloadMarketplaceCars {
     public void downloadCars() throws Exception {
         Car car = new Car();
 
-        ArrayList<String> links = getLinks();
-
         List<User> users = carUserContainer.getQueue();
-        links.forEach(link -> {
 
             users.forEach(user -> {
                 try {
+
+                    String link = getLinks(user);
                     car.setCarsStatus(GetCarsStatus.IN_PROGRESS);
 
-                    Integer userId = user.getId();
+                    WebDriver driver = facebookBrowser.getBrowser(user);
 
-                    User trueUser = userContainer.getFbUserByUserId(userId);
+                    LocalDateTime changedAt = user.getStatusChangedAt();
 
-                    WebDriver driver = facebookBrowser.getBrowser(trueUser);
+                    if (changedAt.plusHours(6).isBefore(LocalDateTime.now())) {
+                        userUpdater.updateStatus(user, UserStatus.ON_COOLDOWN);
+                        return;
+                    }
 
                     UserStatus currentStatus = user.getStatus();
-                    if (currentStatus == UserStatus.INVALID) {
+                    if (currentStatus == UserStatus.INVALID || currentStatus == UserStatus.ON_COOLDOWN) {
                         return;
                     }
 
@@ -103,20 +106,14 @@ public class DownloadMarketplaceCars {
                     System.out.println(message);
                 }
             });
-
-        });
-
-
     }
 
-    public ArrayList<String> getLinks(){
-        ArrayList<String> links = new ArrayList<>();
-        links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false");
-
-        for (int i = 1; i <= 20; i++) {
-            links.add("https://www.facebook.com/marketplace/budapest/vehicles?minPrice="+ i +"000000&maxPrice="+ (i+1) +"000000&sortBy=creation_time_descend&exact=false");
+    public String getLinks(User user){
+        if (user.getId() == 1) {
+            return "https://www.facebook.com/marketplace/budapest/vehicles?minPrice=0&maxPrice=1000000&sortBy=creation_time_descend&exact=false";
         }
-        return links;
+        Integer userId = user.getId();
+        return "https://www.facebook.com/marketplace/budapest/vehicles?minPrice=" + (userId-1) +"000000&maxPrice=" + userId+ "000000&sortBy=creation_time_descend&exact=false";
     }
 }
 
