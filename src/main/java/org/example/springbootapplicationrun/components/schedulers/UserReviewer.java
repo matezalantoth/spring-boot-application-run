@@ -23,15 +23,19 @@ public class UserReviewer {
     @Autowired
     private UserUpdater userUpdater;
 
-//    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 60_000)
     public void reviewUsers() {
 
         List<User> underReviewUsers = userContainer.getUnderReviewUsers();
         underReviewUsers.forEach(user -> {
             LocalDateTime changedAt = user.getStatusChangedAt();
 
-            if (changedAt.plusMinutes(10).isBefore(LocalDateTime.now())) {
+            if (changedAt.plusHours(18).isBefore(LocalDateTime.now())) {
                 return;
+            }
+
+            if (user.getStatus() == UserStatus.ON_COOLDOWN){
+                userUpdater.updateStatus(user, UserStatus.VALID);
             }
 
             WebDriver driver;
